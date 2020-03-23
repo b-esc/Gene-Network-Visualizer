@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"unsafe"
 	. "github.com/b-esc/carolyns-web/server/models"
+	. "github.com/b-esc/carolyns-web/server/utils"
 	"github.com/k0kubun/pp"
 	"github.com/prologic/bitcask"
 	"io"
@@ -40,36 +40,24 @@ func main() {
 	store, _ := bitcask.Open("./store", bitcask.WithMaxValueSize(20777216))
 	for k, v := range finalizedGenes {
 		jsonV, err := json.Marshal(v)
-		fmt.Printf("%d %d \n",unsafe.Sizeof(v), unsafe.Sizeof(jsonV))
 		if err != nil {
-			log.Fatal("jsonMarshal failed",err)
+			log.Fatal("jsonMarshal failed", err)
 		}
 		err = store.Put([]byte(k), jsonV)
-		if err != nil{
+		if err != nil {
 			log.Fatal(err)
 		}
 	}
-
-	//byte910, err := store.Get([]byte("910"))
-	//if err != nil{
-	//	log.Fatal(err)
-	//}
-	//for elem := range store.Keys() {
-	//	pp.Println(elem)
-	//}
-
-	//var test910 Gene
-	//if err := json.Unmarshal(byte910, &test910); err != nil {
-	//	log.Fatal(err)
-	//}
-	//pp.Println(test910)
-
+	q := GetGeneByUid("910", store)
+	pp.Println(q)
 	storeStats, err := store.Stats()
 	if err != nil {
 		log.Fatal(err)
 	}
 	pp.Println(storeStats)
 	pp.Printf("\n\n >>> ! finished BuildDb.go in: %s", time.Since(start))
+
+	// close access to store
 	store.Close()
 
 }
