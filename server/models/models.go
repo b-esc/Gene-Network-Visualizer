@@ -1,6 +1,10 @@
-package DbModels
+package models
 
-import "fmt"
+import (
+	f "fmt"
+	"log"
+	"strconv"
+)
 
 type Link struct {
 	Source         string
@@ -13,6 +17,16 @@ type Link struct {
 // returns pointer, shorthand init of struct
 func NewLink(source, target string, distance float64) *Link {
 	return &Link{source, target, distance, 1.5, "RED"}
+}
+
+func LineToLink(line map[string]string) *Link {
+	f.Println(line)
+	dist, err := strconv.ParseFloat(line["distance"], 64)
+	if err != nil {
+		log.Fatal(err)
+	}
+	x := NewLink(line["from"], line["to"], dist)
+	return x
 }
 
 type EdgesPair struct {
