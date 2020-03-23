@@ -1,20 +1,25 @@
 package main
 
 import (
-	"fmt"
-	. "github.com/b-esc/carolyns-web/server/models"
-	//"github.com/k0kubun/pp"
 	"encoding/json"
+	"fmt"
+	"unsafe"
+	. "github.com/b-esc/carolyns-web/server/models"
+	"github.com/k0kubun/pp"
 	"github.com/prologic/bitcask"
 	"io"
 	"log"
 	"os"
+	"time"
 	// DictReader (.py each line is a map) equivalent in Go
 	"github.com/ibbd-dev/go-csv"
 )
 
 func main() {
+
+	start := time.Now()
 	// Doesn't include program name
+
 	args := os.Args[1:]
 
 	if len(args) < 2 || args[1] == "-h" {
@@ -32,16 +37,40 @@ func main() {
 	parsedEdges := parseEdges(edgesFilename)
 	finalizedGenes := parseGeneInfo(infoFilename, parsedEdges)
 
-	store, _ := bitcask.Open("./store")
-	defer store.Close()
-
+	store, _ := bitcask.Open("./store", bitcask.WithMaxValueSize(20777216))
 	for k, v := range finalizedGenes {
 		jsonV, err := json.Marshal(v)
+		fmt.Printf("%d %d \n",unsafe.Sizeof(v), unsafe.Sizeof(jsonV))
 		if err != nil {
+			log.Fatal("jsonMarshal failed",err)
+		}
+		err = store.Put([]byte(k), jsonV)
+		if err != nil{
 			log.Fatal(err)
 		}
-		store.Put([]byte(k), jsonV)
 	}
+
+	//byte910, err := store.Get([]byte("910"))
+	//if err != nil{
+	//	log.Fatal(err)
+	//}
+	//for elem := range store.Keys() {
+	//	pp.Println(elem)
+	//}
+
+	//var test910 Gene
+	//if err := json.Unmarshal(byte910, &test910); err != nil {
+	//	log.Fatal(err)
+	//}
+	//pp.Println(test910)
+
+	storeStats, err := store.Stats()
+	if err != nil {
+		log.Fatal(err)
+	}
+	pp.Println(storeStats)
+	pp.Printf("\n\n >>> ! finished BuildDb.go in: %s", time.Since(start))
+	store.Close()
 
 }
 
