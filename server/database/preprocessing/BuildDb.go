@@ -64,7 +64,7 @@ func parseEdges(edgesFilename string) map[string]EdgesPair {
 			log.Fatal(err)
 		}
 
-		fmt.Println(line)
+		// fmt.Println(line)
 		fromUID, toUID := line["from"], line["to"]
 
 		// if current line fromUID not in parsedEdges

@@ -20,7 +20,7 @@ func NewLink(source, target string, distance float64) *Link {
 }
 
 func LineToLink(line map[string]string) *Link {
-	f.Println(line)
+	// f.Println(line)
 	dist, err := strconv.ParseFloat(line["distance"], 64)
 	if err != nil {
 		log.Fatal(err)
