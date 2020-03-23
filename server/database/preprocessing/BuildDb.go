@@ -11,6 +11,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"time"
 	// DictReader (.py each line is a map) equivalent in Go
 	"github.com/ibbd-dev/go-csv"
@@ -18,9 +19,6 @@ import (
 
 func main() {
 	// clear previous store
-	cmd := exec.Command("rm -r ../store")
-	cmd.Stdout = os.Stdout
-	cmd.Run()
 
 	start := time.Now()
 	// Doesn't include program name
@@ -28,9 +26,17 @@ func main() {
 	args := os.Args[1:]
 
 	if len(args) < 2 || args[1] == "-h" {
-		fmt.Println("Usage: go run ./BuildDb.go info.csv edges.csv")
-		fmt.Println(">> Successfully parsing new database files will clear previous contents!")
+		fmt.Println("Usage: go run ./BuildDb.go info.csv edges.csv [-d as third arg clears current db]")
 		os.Exit(0)
+	}
+
+	if len(args) > 2 && args[2] == "-d" {
+		fmt.Println("-d as third arg.. clearing current db..")
+		fp, _ := filepath.Abs("../store")
+		cmd := exec.Command("rm", "-r", fp)
+		if err := cmd.Run(); err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	fmt.Println("Our database is stored under /server/database/store")
@@ -43,6 +49,7 @@ func main() {
 	parsedEdges := parseEdges(edgesFilename)
 	finalizedGenes := parseGeneInfo(infoFilename, parsedEdges)
 	store, _ := bitcask.Open("../store", bitcask.WithMaxValueSize(20777216))
+	defer store.Close()
 
 	for k, v := range finalizedGenes {
 		jsonV, err := json.Marshal(v)
@@ -61,11 +68,12 @@ func main() {
 		log.Fatal(err)
 	}
 	pp.Println(storeStats)
-	pp.Printf("\n\n >>> ! finished BuildDb.go in: %s", time.Since(start))
-
+	pp.Printf("\n\n >>> ! finished BuildDb.go in: %s", time.Since(start).Seconds())
+	pp.Println(store)
 	// close access to store
-	store.Close()
-
+	if err := store.Sync(); err != nil {
+		log.Panic("issue when sync()..  ", err)
+	}
 }
 
 func parseGeneInfo(infoFilename string, parsedEdges map[string]EdgesPair) map[string]Gene {
