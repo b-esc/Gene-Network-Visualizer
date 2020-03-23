@@ -4,18 +4,23 @@ import (
 	"encoding/json"
 	"fmt"
 	. "github.com/b-esc/carolyns-web/server/models"
-	. "github.com/b-esc/carolyns-web/server/utils"
+	//. "github.com/b-esc/carolyns-web/server/utils"
 	"github.com/k0kubun/pp"
 	"github.com/prologic/bitcask"
 	"io"
 	"log"
 	"os"
+	"os/exec"
 	"time"
 	// DictReader (.py each line is a map) equivalent in Go
 	"github.com/ibbd-dev/go-csv"
 )
 
 func main() {
+	// clear previous store
+	cmd := exec.Command("rm -r ../store")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 
 	start := time.Now()
 	// Doesn't include program name
@@ -24,6 +29,7 @@ func main() {
 
 	if len(args) < 2 || args[1] == "-h" {
 		fmt.Println("Usage: go run ./BuildDb.go info.csv edges.csv")
+		fmt.Println(">> Successfully parsing new database files will clear previous contents!")
 		os.Exit(0)
 	}
 
@@ -36,8 +42,8 @@ func main() {
 
 	parsedEdges := parseEdges(edgesFilename)
 	finalizedGenes := parseGeneInfo(infoFilename, parsedEdges)
+	store, _ := bitcask.Open("../store", bitcask.WithMaxValueSize(20777216))
 
-	store, _ := bitcask.Open("./store", bitcask.WithMaxValueSize(20777216))
 	for k, v := range finalizedGenes {
 		jsonV, err := json.Marshal(v)
 		if err != nil {
@@ -48,8 +54,8 @@ func main() {
 			log.Fatal(err)
 		}
 	}
-	q := GetGeneByUid("910", store)
-	pp.Println(q)
+	//q := GetGeneByUid("910", store)
+	//pp.Println(q)
 	storeStats, err := store.Stats()
 	if err != nil {
 		log.Fatal(err)
@@ -73,11 +79,10 @@ func parseGeneInfo(infoFilename string, parsedEdges map[string]EdgesPair) map[st
 	// lines are maps, key is column title
 	reader := goCsv.NewMapReader(csvFile)
 
-	fieldnames, err := reader.GetFieldnames()
+	_, err = reader.GetFieldnames()
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(fieldnames)
 
 	for {
 		// handle error / eof
@@ -106,12 +111,10 @@ func parseEdges(edgesFilename string) map[string]EdgesPair {
 	// lines are maps, key is column title
 	reader := goCsv.NewMapReader(csvFile)
 
-	fieldnames, err := reader.GetFieldnames()
+	_, err = reader.GetFieldnames()
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println(fieldnames)
 
 	for {
 		// handle error / eof
