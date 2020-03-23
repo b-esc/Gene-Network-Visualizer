@@ -1,9 +1,10 @@
 package models
 
 import (
-	f "fmt"
+	//f "fmt"
 	"log"
 	"strconv"
+	"strings"
 )
 
 type Link struct {
@@ -20,7 +21,7 @@ func NewLink(source, target string, distance float64) *Link {
 }
 
 func LineToLink(line map[string]string) *Link {
-	// f.Println(line)
+	//f.Println(line)
 	dist, err := strconv.ParseFloat(line["distance"], 64)
 	if err != nil {
 		log.Fatal(err)
@@ -36,7 +37,7 @@ type EdgesPair struct {
 	Outgoing map[string]Link
 }
 
-type DbGene struct {
+type Gene struct {
 	// reactd3graph
 	// id == uid, label == display name
 	Id    string
@@ -50,4 +51,16 @@ type DbGene struct {
 	Term_ids          []string
 	Gene_names        []string
 	Edges             EdgesPair
+}
+
+func NewGene(u, s, d, gdn, c, ti, gn string, parsedEdges map[string]EdgesPair) *Gene {
+	term_ids := strings.Split(ti, "|")
+	gene_names := strings.Split(gn, "|")
+	new_edges := parsedEdges[u]
+	return &Gene{u, gdn, u, s, d, gdn, c, term_ids, gene_names, new_edges}
+}
+
+func LineToGene(line map[string]string, parsedEdges map[string]EdgesPair) *Gene {
+	x := NewGene(line["uid"], line["species"], line["description"], line["gene_display_name"], line["color"], line["term_ids"], line["gene_names"], parsedEdges)
+	return x
 }

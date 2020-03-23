@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	. "github.com/b-esc/carolyns-web/server/models"
+	"github.com/k0kubun/pp"
 	"github.com/prologic/bitcask"
 	"io"
 	"log"
@@ -27,11 +28,45 @@ func main() {
 
 	fmt.Printf("\n Now Loading \n Info: %s | Edges: %s \n", infoFilename, edgesFilename)
 
-	parseEdges(edgesFilename)
+	parsedEdges := parseEdges(edgesFilename)
+	finalizedGenes := parseGeneInfo(infoFilename, parsedEdges)
+
+	pp.Println(finalizedGenes["7296"])
 
 	store, _ := bitcask.Open("./store")
 	defer store.Close()
 
+}
+
+func parseGeneInfo(infoFilename string, parsedEdges map[string]EdgesPair) map[string]Gene {
+	finalizedGenes := make(map[string]Gene)
+
+	csvFile, err := os.Open(infoFilename)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// lines are maps, key is column title
+	reader := goCsv.NewMapReader(csvFile)
+
+	fieldnames, err := reader.GetFieldnames()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(fieldnames)
+
+	for {
+		// handle error / eof
+		line, err := reader.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		finalizedGenes[line["uid"]] = *LineToGene(line, parsedEdges)
+	}
+	return finalizedGenes
 }
 
 // returns map of uid => EdgesPair (see: models/EdgesPair)
