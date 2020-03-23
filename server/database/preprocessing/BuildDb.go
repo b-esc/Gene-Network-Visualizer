@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	. "github.com/b-esc/carolyns-web/server/models"
-	"github.com/k0kubun/pp"
+	//"github.com/k0kubun/pp"
+	"encoding/json"
 	"github.com/prologic/bitcask"
 	"io"
 	"log"
@@ -31,10 +32,16 @@ func main() {
 	parsedEdges := parseEdges(edgesFilename)
 	finalizedGenes := parseGeneInfo(infoFilename, parsedEdges)
 
-	pp.Println(finalizedGenes["7296"])
-
 	store, _ := bitcask.Open("./store")
 	defer store.Close()
+
+	for k, v := range finalizedGenes {
+		jsonV, err := json.Marshal(v)
+		if err != nil {
+			log.Fatal(err)
+		}
+		store.Put([]byte(k), jsonV)
+	}
 
 }
 
