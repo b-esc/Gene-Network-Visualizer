@@ -1,11 +1,8 @@
 package main
 
 import (
-	//"bufio"
-	//"encoding/csv"
-	"../../models"
-	"carolyns-web/server/models"
 	"fmt"
+	. "github.com/b-esc/carolyns-web/server/models"
 	"github.com/prologic/bitcask"
 	"io"
 	"log"
@@ -37,6 +34,7 @@ func main() {
 
 }
 
+// returns map of uid => EdgesPair (see: models/EdgesPair)
 func parseEdges(edgesFilename string) map[string]EdgesPair {
 	// return target
 	parsedEdges := make(map[string]EdgesPair)
@@ -57,6 +55,7 @@ func parseEdges(edgesFilename string) map[string]EdgesPair {
 	fmt.Println(fieldnames)
 
 	for {
+		// handle error / eof
 		line, err := reader.Read()
 		if err == io.EOF {
 			break
@@ -64,5 +63,23 @@ func parseEdges(edgesFilename string) map[string]EdgesPair {
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		fmt.Println(line)
+		fromUID, toUID := line["from"], line["to"]
+
+		// if current line fromUID not in parsedEdges
+		if _, ok := parsedEdges[fromUID]; !ok {
+			// init incoming and outgoing maps
+			//parsedEdges[fromUID] = EdgesPair{}
+			parsedEdges[fromUID] = EdgesPair{make(map[string]Link), make(map[string]Link)}
+		}
+		parsedEdges[fromUID].Outgoing[toUID] = *LineToLink(line)
+
+		// again for toUID not in parsedEdges
+		if _, ok := parsedEdges[toUID]; !ok {
+			parsedEdges[toUID] = EdgesPair{make(map[string]Link), make(map[string]Link)}
+		}
+		parsedEdges[toUID].Incoming[fromUID] = *LineToLink(line)
 	}
+	return parsedEdges
 }
