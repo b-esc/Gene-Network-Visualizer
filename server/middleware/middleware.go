@@ -1,29 +1,31 @@
 package middleware
 
 import (
-	"context"
+	//"context"
 	"encoding/json"
 	"fmt"
 	. "github.com/b-esc/carolyns-web/server/models"
 	"github.com/deckarep/golang-set"
 	"github.com/gorilla/mux" // routing
-	"github.com/k0kubun/pp"
+	//"github.com/k0kubun/pp"
 	. "github.com/prologic/bitcask"
 	"log"
 	"net/http"
 	"path/filepath"
 	"sort"
+	"strconv"
 )
 
 // bitcask instance
-var store *bitcask
+var store *Bitcask
+var storeErr error
 
 // connect to bitcask
 func init() {
 	fp, _ := filepath.Abs("database/store")
-	store, err := Open(fp, WithMaxValueSize(20777216))
-	if err != nil {
-		log.Fatal(err)
+	store, storeErr = Open(fp, WithMaxValueSize(20777216))
+	if storeErr != nil {
+		log.Fatal(storeErr)
 	}
 	fmt.Println("Connected to bitcask store (database)")
 }
@@ -39,14 +41,14 @@ func QueryGeneByUid(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	uid := vars["uid"]
-	maxRes := vars["maxRes"]
-	isNhood := vars["isNhood"]
+	maxRes, _ := strconv.Atoi(vars["maxRes"])
+	isNhood, _ := strconv.ParseBool(vars["isNhood"])
 
 	genes, links := buildQueryResponse(uid, maxRes, isNhood)
 	fmt.Println(genes, links)
 }
 
-func QueryGeneByUid(w http.ResponseWriter, r *http.Request) {
+func PreviewGeneByUid(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
@@ -107,10 +109,10 @@ func nMostRelatedGenesLinks(outgoing map[string]Link, n int, b *Bitcask) ([]stri
 
 func getNhoodLinks(uidSet mapset.Set, linkStrSet mapset.Set, genes []Gene) []Link {
 	var nhoodLinks []Link
-	for idx, curGene := range genes {
+	for _, curGene := range genes {
 		for _, curOutLink := range curGene.Edges.Outgoing {
 			outStr := curOutLink.ToString()
-			if uidSet.contains(curOutLink.Target) && !linkStrSet.Contains(outStr) {
+			if uidSet.Contains(curOutLink.Target) && !linkStrSet.Contains(outStr) {
 				nhoodLinks = append(nhoodLinks, curOutLink)
 				linkStrSet.Add(outStr)
 			}
@@ -118,7 +120,7 @@ func getNhoodLinks(uidSet mapset.Set, linkStrSet mapset.Set, genes []Gene) []Lin
 
 		for _, curInLink := range curGene.Edges.Incoming {
 			inStr := curInLink.ToString()
-			if uidSet.contains(curInLink.Source) && !linkStrSet.Contains(inStr) {
+			if uidSet.Contains(curInLink.Source) && !linkStrSet.Contains(inStr) {
 				nhoodLinks = append(nhoodLinks, curInLink)
 				linkStrSet.Add(inStr)
 			}
@@ -129,7 +131,7 @@ func getNhoodLinks(uidSet mapset.Set, linkStrSet mapset.Set, genes []Gene) []Lin
 
 func linkSliceToSet(links []Link) mapset.Set {
 	linkSet := mapset.NewSet()
-	for idx, curLink := range links {
+	for _, curLink := range links {
 		linkSet.Add(curLink.ToString())
 	}
 	return linkSet
@@ -149,7 +151,11 @@ func buildQueryResponse(uid string, n int, isNhood bool) ([]Gene, []Link) {
 	var nhoodLinks []Link
 
 	if isNhood {
-		uidSet := mapset.NewSetFromSlice(geneUids)
+		s := make([]interface{}, len(geneUids))
+		for i, v := range geneUids {
+			s[i] = v
+		}
+		uidSet := mapset.NewSetFromSlice(s)
 		uidSet.Add(rootG.Uid)
 		nhoodLinks = getNhoodLinks(uidSet, linkSliceToSet(links), genes)
 	}
