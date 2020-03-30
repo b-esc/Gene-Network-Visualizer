@@ -20,6 +20,11 @@ func NewLink(source, target string, distance float64) *Link {
 	return &Link{source, target, distance, 1.5, "RED"}
 }
 
+func (l Link) ToString() string{
+	str := l.Source + "," + l.Target
+	return str
+}
+
 func LineToLink(line map[string]string) *Link {
 	//f.Println(line)
 	dist, err := strconv.ParseFloat(line["distance"], 64)
@@ -30,7 +35,7 @@ func LineToLink(line map[string]string) *Link {
 	return x
 }
 
-type EdgesPair struct {
+hoype EdgesPair struct {
 	// key is source
 	Incoming map[string]Link
 	// key is target
