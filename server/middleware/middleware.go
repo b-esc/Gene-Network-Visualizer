@@ -7,7 +7,7 @@ import (
 	. "github.com/b-esc/carolyns-web/server/models"
 	"github.com/deckarep/golang-set"
 	"github.com/gorilla/mux" // routing
-	//"github.com/k0kubun/pp"
+	"github.com/k0kubun/pp"
 	. "github.com/prologic/bitcask"
 	"log"
 	"net/http"
@@ -45,7 +45,7 @@ func QueryGeneByUid(w http.ResponseWriter, r *http.Request) {
 	isNhood, _ := strconv.ParseBool(vars["isNhood"])
 
 	genes, links := buildQueryResponse(uid, maxRes, isNhood)
-	fmt.Println(genes, links)
+	pp.Print(genes, links)
 }
 
 func PreviewGeneByUid(w http.ResponseWriter, r *http.Request) {
@@ -58,7 +58,7 @@ func PreviewGeneByUid(w http.ResponseWriter, r *http.Request) {
 	uid := vars["uid"]
 
 	genes := buildPreviewResponse(uid)
-	fmt.Println(genes)
+	pp.Print(genes)
 }
 
 /* utils */

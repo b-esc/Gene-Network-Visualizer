@@ -1,9 +1,14 @@
 package main
 
 import (
-	. "github.com/b-esc/carolyns-web/server/utils"
+	"fmt"
+	"github.com/b-esc/carolyns-web/server/router"
+	"log"
+	"net/http"
 )
 
 func main() {
-	QueryGene("910")
+	r := router.Router()
+	fmt.Println("Starting server on port 8080")
+	log.Fatal(http.ListenAndServe(":8080", r))
 }

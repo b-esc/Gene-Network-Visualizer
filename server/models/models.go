@@ -20,7 +20,7 @@ func NewLink(source, target string, distance float64) *Link {
 	return &Link{source, target, distance, 1.5, "RED"}
 }
 
-func (l Link) ToString() string{
+func (l Link) ToString() string {
 	str := l.Source + "," + l.Target
 	return str
 }
@@ -35,7 +35,7 @@ func LineToLink(line map[string]string) *Link {
 	return x
 }
 
-hoype EdgesPair struct {
+type EdgesPair struct {
 	// key is source
 	Incoming map[string]Link
 	// key is target
