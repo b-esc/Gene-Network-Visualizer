@@ -1,6 +1,7 @@
 import React from 'react';
+import axios from "axios";
 import { useStore } from 'react-context-hook';
-import { Transition, Grid } from 'semantic-ui-react';
+import { Transition, Grid, Header, Button } from 'semantic-ui-react';
 
 let endpoint = "http://localhost:8080";
 
@@ -17,11 +18,11 @@ export default function () {
 
   function previewGene(){
     axios.get(endpoint + '/api/previewGene/'
-    + `${hoverUID}`).then(res =>{ return res.json }.then(res =>{
+    + `${hoverUID}`).then(res =>{ return res.json }).then(res =>{
       if(res.error) throw(res.error);
       console.log(res);
       console.log("preview gene res successful (CALLING DEFAULT AS 910)!");
-    }));
+    });
   }
 
   return(
@@ -32,7 +33,7 @@ export default function () {
         (
           <div style={{ backgroundColor: 'rgba(237, 235, 237,0.3)',
             padding: '1em', position: 'absolute',
-            top: `${yPos}px`, left: `${xPos}px` }}>
+            top: `${yPos-125}px`, left: `${xPos+250}px` }}>
             <Grid
               celled='internally'
               centered
@@ -43,7 +44,7 @@ export default function () {
                   'hovered display name'
                 </Header>
                 <Button onClick={() =>{
-                    setMoreInfoVisible('true');
+                    setMoreInfoVisible(true);
                     previewGene();
                   }}>
                   More Info

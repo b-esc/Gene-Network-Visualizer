@@ -1,12 +1,16 @@
 import React from 'react';
+import axios from "axios";
 import { useStore } from 'react-context-hook';
-import { Table, Menu, Button } from 'semantic-ui-react';
+import { Table, Menu, Button, Icon } from 'semantic-ui-react';
 
 let allowed_table_keys = ["species","gene_display_name","gene_names","description","term_ids"];
 let atk_set = new Set(allowed_table_keys);
 let table_headers = ['Species', 'Display Name',"Gene Names",'Description', 'Term IDs','🐦 🐦']
 
-export default function() {
+let endpoint = "http://localhost:8080";
+
+
+export default function(props) {
   const [tableGenes, setTableGenes] = useStore('tableGenes')
   const [curPage, setCurPage] = useStore('curPage')
   const [hoverUID, setHoverUID] = useStore('hoverUID')
@@ -18,11 +22,11 @@ export default function() {
 
   function previewGene(){
     axios.get(endpoint + '/api/previewGene/'
-    + `${hoverUID}`).then(res =>{ return res.json }.then(res =>{
+    + `${hoverUID}`).then(res =>{ return res.json }).then(res =>{
       if(res.error) throw(res.error);
       console.log(res);
       console.log("FROM TABLE preview gene res successful (CALLING DEFAULT AS 910)!");
-    }));
+    });
   }
 
   let render_page = tableGenes.map(gene =>
@@ -36,7 +40,7 @@ export default function() {
           }
         })
       }
-      {!isPreview &&
+      {!props.isPreview &&
       <Table.Cell>
         <Button animated onClick={
             function(){
@@ -70,8 +74,8 @@ export default function() {
   });
 
   let render_titles = table_headers.map(title =>{
-    if(!(!this.props.is_parent && title == '🐦 🐦')){
-      return(<Table.Cell>{title}</Table.Cell>)
+    if(!(!props.isPreview && title == '🐦 🐦')){
+      return(<Table.HeaderCell key={title}>{title}</Table.HeaderCell>)
     }
   });
 
@@ -87,7 +91,7 @@ export default function() {
 
       <Table.Footer>
         <Table.Row>
-          <Table.HeaderCell colSpan = {!isPreview ? '6' : '5'}>
+          <Table.HeaderCell colSpan = {!props.isPreview ? '6' : '5'}>
             <Menu floated='right' pagination id="page-numbers">
               {render_numbers}
             </Menu>

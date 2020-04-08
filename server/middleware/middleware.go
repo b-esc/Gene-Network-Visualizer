@@ -43,9 +43,16 @@ func QueryGeneByUid(w http.ResponseWriter, r *http.Request) {
 	uid := vars["uid"]
 	maxRes, _ := strconv.Atoi(vars["maxRes"])
 	isNhood, _ := strconv.ParseBool(vars["isNhood"])
-
+	fmt.Println(uid,maxRes,isNhood)
 	genes, links := buildQueryResponse(uid, maxRes, isNhood)
-	pp.Print(genes, links)
+	ResData := struct{
+		Genes	[]Gene
+		Links []Link
+	}{
+		genes,
+		links,
+	}
+	json.NewEncoder(w).Encode(ResData)
 }
 
 func PreviewGeneByUid(w http.ResponseWriter, r *http.Request) {
@@ -159,6 +166,7 @@ func buildQueryResponse(uid string, n int, isNhood bool) ([]Gene, []Link) {
 		uidSet.Add(rootG.Uid)
 		nhoodLinks = getNhoodLinks(uidSet, linkSliceToSet(links), genes)
 	}
+	genes = append(genes, rootG)
 	links = append(links, nhoodLinks...)
 	return genes, links
 }

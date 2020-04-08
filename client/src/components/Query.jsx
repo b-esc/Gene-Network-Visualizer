@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from "axios";
+import LowercaseKeys from '../clientUtils/LowercaseKeys';
 import { useStore } from 'react-context-hook';
 import { Popup, Button, Grid, Header, Input, Label, Dropdown } from 'semantic-ui-react';
 
@@ -28,14 +29,24 @@ export default function (){
   const [searchType, setSearchType] = useStore('searchType')
   const [isNhood, toggleNhood] = useStore('isNhood')
 
+  const [data, setData] = useStore('data');
+
   function queryGene(){
     axios.get(endpoint + '/api/queryGene/'
-    + `${queryText}/${maxRes}/${isNhood}`).then(res =>{ return res.json }.then(res =>{
+    + `${queryText}/${maxRes}/${isNhood}`).then(res =>{
       if(res.error) throw(res.error);
+      let nodes = LowercaseKeys(res.data.Genes);
+      let links = LowercaseKeys(res.data.Links);
+      setData({
+        nodes:nodes,
+        links:links,
+        focusedNodeId:nodes[0]
+      });
       console.log(res);
+      console.log(res.data);
       console.log("query gene res successful!");
       console.log("BE SURE TO SET CURRENT PAGE TO 1");
-    }));
+    });
   }
 
   return (
@@ -60,7 +71,7 @@ export default function (){
             </Input>
           </Grid.Column>
           <Grid.Column textAlign='center'>
-            <Header as='h2'></Header>
+            <Header as='h2'>Is Neighborhood</Header>
             <Header as='h4'>
               {`${isNhood}`}
             </Header>
@@ -73,10 +84,7 @@ export default function (){
         placeholder="Query Input"
         size="huge"
         type="text"
-        onChange={e => {
-          if(!e.target.value.trim()) return;
-          setQueryText(e.target.value);
-        }}
+
         >
         <Label style={{ marginRight: '0' }} size="huge">
           <Dropdown
@@ -89,7 +97,12 @@ export default function (){
               setSearchType(data.value);
             }}/>
         </Label>
-        <Input />
+        <Input
+          placeholder="Query Input"
+          onChange={e => {
+            if(!e.target.value.trim()) return;
+            setQueryText(e.target.value);
+          }}/>
           <Button
             onClick={() => queryGene()}
             size="huge">

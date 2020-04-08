@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from "axios";
 import { useStore } from 'react-context-hook';
-import { Modal, Header} from 'semantic-ui-react';
+import { Modal, Header, Button} from 'semantic-ui-react';
 import Table from './Table.jsx'
 
 let endpoint = "http://localhost:8080";
@@ -34,7 +34,7 @@ export default function () {
 
           <h1>Most related (doc2vec) table preview:</h1>
 
-          <TablePreview/>
+          <Table isPreview={true}/>
 
         </Modal.Description>
         <Button onClick={() => setMoreInfoVisible(!moreInfoVisible)}>Close</Button>

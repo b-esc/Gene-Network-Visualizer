@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { withStore } from 'react-context-hook';
 import { Segment } from 'semantic-ui-react';
 import Home from './Home.jsx';
 
@@ -15,6 +16,8 @@ function App(){
 }
 
 const initialState = {
+  // for GraphContainer
+  focusedNodeId: "initialNode1",
   // Query input given to server
   queryText: "init inputText from app",
   maxRes: 10,
@@ -27,9 +30,11 @@ const initialState = {
   hoverFix: false,
   hoverUID: 910,
   // Network initial values
-  nodes: [{id:"initialNode1",color:"black",symbolType:"diamond"},
-          {id:"initialNode2",color:"red",symbolType:"diamond"}],
-  links: [{label:"initialLink", source:"initialNode1",target:"initialNode2"}],
+  data: {
+    nodes: [{id:"initialNode1",color:"black",symbolType:"diamond"},
+            {id:"initialNode2",color:"red",symbolType:"diamond"}],
+    links: [{label:"initialLink", source:"initialNode1",target:"initialNode2"}],
+  },
   // More Info Modal
   moreInfoVisible: false,
   moreInfoGene: {uid: -1, species:"initial species", gene_names:"init gnames",
@@ -43,7 +48,7 @@ const initialState = {
 
 const storeConfig ={
   listener: (state) =>{
-    console.log('state changed!', state)
+    //console.log('state changed!', state)
   }
 }
 

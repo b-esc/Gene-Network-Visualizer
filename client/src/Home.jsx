@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Segment, Header, Image, Grid } from 'semantic-ui-react';
-import Graph from "./components/Graph";
+import GraphContainer from "./components/GraphContainer";
 import NodeHoverModal from "./components/NodeHoverModal";
 import MoreInfoModal from "./components/MoreInfoModal";
 import Query from "./components/Query";
@@ -19,13 +19,13 @@ export default function (){
       </div>
 
       <div id="graph-bridge-container">
-        <Graph/>
+        <GraphContainer/>
       </div>
 
       <NodeHoverModal/>
       <MoreInfoModal/>
 
-      <Grid>
+      <Grid className="ui segment centered">
           <Grid.Row>
               <Header as="h3" style={{ fontSize: "2em" }}>
               </Header>
@@ -34,7 +34,7 @@ export default function (){
               <Query/>
           </Grid.Row>
           <Grid.Row>
-              <Table/>
+              <Table isPreview={false}/>
           </Grid.Row>
       </Grid>
       </div>
