@@ -65,7 +65,13 @@ func PreviewGeneByUid(w http.ResponseWriter, r *http.Request) {
 	uid := vars["uid"]
 
 	genes := buildPreviewResponse(uid)
-	pp.Print(genes)
+	ResData := struct{
+		Gene []Gene
+	}{
+		genes,
+	}
+	json.NewEncoder(w).Encode(ResData)
+	// pp.Print(genes)
 }
 
 /* utils */

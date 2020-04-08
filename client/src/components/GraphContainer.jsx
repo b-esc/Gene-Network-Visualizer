@@ -6,7 +6,7 @@ import { Graph, Link, d3 } from "react-d3-graph";
 // hack to use hooks with above class
 // we use class as we need finite control over certain lifecycle methods
 export default function(){
-    const isCancelled = useRef
+    const isCancelled = useRef;
 
     const [hoverVisible, setHoverVisible] = useStore('hoverVisible');
     const [hoverFix, setHoverFix] = useStore('hoverFix');
@@ -23,15 +23,15 @@ export default function(){
       "automaticRearrangeAfterDropNode": false,
       "collapsible": false,
       "directed": true,
-      "focusAnimationDuration": 4,
-      "focusZoom": 2.5,
+      "focusAnimationDuration": 2,
+      "focusZoom": 1.5,
       "height": 400,
       "highlightDegree": 1,
       "highlightOpacity": 1,
-      "linkHighlightBehavior": false,
+      "linkHighlightBehavior": true,
       "maxZoom": 5,
       "minZoom": 1,
-      "nodeHighlightBehavior": false,
+      "nodeHighlightBehavior": true,
       "panAndZoom": false,
       "staticGraph": false,
       "staticGraphWithDragAndDrop": false,
@@ -39,20 +39,20 @@ export default function(){
       "d3": {
         "alphaTarget": 0.05,
         "gravity": -100,
-        "linkLength": 100,
+        "linkLength": 45,
         "linkStrength": 1
       },
       "node": {
         "color": "#d3d3d3",
         "fontColor": "black",
-        "fontSize": 8,
+        "fontSize": 14,
         "fontWeight": "normal",
         "highlightColor": "SAME",
-        "highlightFontSize": 8,
+        "highlightFontSize": 14,
         "highlightFontWeight": "normal",
-        "highlightStrokeColor": "SAME",
+        "highlightStrokeColor": "RED",
         "highlightStrokeWidth": "SAME",
-        "labelProperty": "id",
+        "labelProperty": "label",
         "mouseCursor": "pointer",
         "opacity": 1,
         "renderLabel": true,
@@ -63,17 +63,17 @@ export default function(){
         "symbolType": "circle"
       },
       "link": {
-        "color": "#8c6262",
+        "color": "gray",
         "fontColor": "black",
         "fontSize": 8,
         "fontWeight": "normal",
-        "highlightColor": "#d3d3d3",
+        "highlightColor": "RED",
         "highlightFontSize": 8,
         "highlightFontWeight": "normal",
         "labelProperty": "label",
         "mouseCursor": "pointer",
         "opacity": 1,
-        "type":"CURVE_SMOOTH",
+        "type":"STRAIGHT",
         "renderLabel": false,
         "semanticStrokeWidth": false,
         "strokeWidth": 1.5,
@@ -127,6 +127,7 @@ export default function(){
       }
 
     const onMouseOutNode = id =>{
+      //setHighlightedNodeId("");
         // Toggle hover modal handles the case when hoverFix is true
         if(!hoverFix){
           setHoverVisible(false)
@@ -139,6 +140,7 @@ export default function(){
       }
 
     const onMouseOverNode = id => {
+      //setHighlightedNodeId(id);
       if(!hoverVisible){
         setHoverUID(id);
         setHoverVisible(true);
@@ -158,6 +160,8 @@ export default function(){
     //
     // componentDidUpdate
     useEffect(()=>{
+      // console.log(highlightedNode);
+      // setHighlightedNodeId(highlightedNode);
       console.log(data,"GRAPH CONTAINER DID UPDATE!");
       if(typeof data.nodes !== 'undefined'){
         let decoratedNodes = decorateGraphNodesWithInitialPositioning(data.nodes);

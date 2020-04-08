@@ -18,6 +18,7 @@ function App(){
 const initialState = {
   // for GraphContainer
   focusedNodeId: "initialNode1",
+  highlightedNode: "",
   // Query input given to server
   queryText: "init inputText from app",
   maxRes: 10,
@@ -42,8 +43,11 @@ const initialState = {
                 color:"white", term_ids:"init term_ids", edges:"edges"},
   // Main Table Params
   tableGenes: [],
+  previewGenes: [],
   curPage: 1,
   rowsPerPage: 8,
+  curPreviewPage: 1,
+  previewRowsPerPage:4,
 }
 
 const storeConfig ={

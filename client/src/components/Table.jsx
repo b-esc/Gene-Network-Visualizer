@@ -11,14 +11,14 @@ let endpoint = "http://localhost:8080";
 
 
 export default function(props) {
-  const [tableGenes, setTableGenes] = useStore('tableGenes')
-  const [curPage, setCurPage] = useStore('curPage')
+  const [curGenes, setCurGenes] = (props.isPreview) ? useStore('previewGenes') : useStore('curGenes');
+  const [curPage, setCurPage] = (props.isPreview) ? useStore('curPreviewPage') : useStore('curPage')
   const [hoverUID, setHoverUID] = useStore('hoverUID')
-  const [rowsPerPage] = useStore('rowsPerPage')
+  const [rowsPerPage] = (props.isPreview) ? useStore('previewRowsPerPage') : useStore('rowsPerPage')
 
   let lastIdx = rowsPerPage * curPage;
   let firstIdx = lastIdx - rowsPerPage;
-  let curPageData = tableGenes.slice(firstIdx,lastIdx);
+  let curPageData = curGenes.slice(firstIdx,lastIdx);
 
   function previewGene(){
     axios.get(endpoint + '/api/previewGene/'
@@ -29,7 +29,7 @@ export default function(props) {
     });
   }
 
-  let render_page = tableGenes.map(gene =>
+  let render_page = curGenes.map(gene =>
     <Table.Row>
       {
         allowed_table_keys.map(key =>{
@@ -58,7 +58,7 @@ export default function(props) {
   );
 
   let page_numbers = []
-  for(let i = 1; i <= Math.ceil(tableGenes.length / rowsPerPage); i++){
+  for(let i = 1; i <= Math.ceil(curGenes.length / rowsPerPage); i++){
     page_numbers.push(i);
   }
 

@@ -28,6 +28,7 @@ export default function (){
   const [maxRes, setMaxRes] = useStore('maxRes')
   const [searchType, setSearchType] = useStore('searchType')
   const [isNhood, toggleNhood] = useStore('isNhood')
+  const [tableGenes, setTableGenes] = useStore('tableGenes')
 
   const [data, setData] = useStore('data');
 
@@ -37,6 +38,7 @@ export default function (){
       if(res.error) throw(res.error);
       let nodes = LowercaseKeys(res.data.Genes);
       let links = LowercaseKeys(res.data.Links);
+      setTableGenes(nodes);
       setData({
         nodes:nodes,
         links:links,

@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from "axios";
+import LowercaseKeys from '../clientUtils/LowercaseKeys';
 import { useStore } from 'react-context-hook';
 import { Transition, Grid, Header, Button } from 'semantic-ui-react';
 
@@ -14,12 +15,17 @@ export default function () {
   const [xPos, setXPos] = useStore('xPos')
   const [yPos, setYPos] = useStore('yPos')
 
+  const [previewGenes, setPreviewGenes] = useStore('previewGenes')
+
+
   const [moreInfoVisible, setMoreInfoVisible] = useStore('moreInfoVisible')
 
   function previewGene(){
     axios.get(endpoint + '/api/previewGene/'
-    + `${hoverUID}`).then(res =>{ return res.json }).then(res =>{
+    + `${hoverUID}`).then(res =>{
       if(res.error) throw(res.error);
+      let nodes = LowercaseKeys(res.data.Genes);
+      setPreviewGenes(nodes);
       console.log(res);
       console.log("preview gene res successful (CALLING DEFAULT AS 910)!");
     });
