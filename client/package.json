@@ -8,6 +8,8 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
     "d3": "^5.15.1",
+    "faker": "^4.1.0",
+    "lodash": "^4.17.15",
     "react": "^16.13.1",
     "react-context-hook": "^1.2.1",
     "react-csv": "^2.0.3",

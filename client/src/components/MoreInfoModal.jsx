@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from "axios";
+import CategoricalSearch from './CategoricalSearch';
 import {CSVLink} from "react-csv";
 import { useStore } from 'react-context-hook';
 import { Modal, Header, Button, List, Accordion, Icon } from 'semantic-ui-react';
@@ -91,6 +92,7 @@ export default function () {
               Export
             </Button>
           </CSVLink>
+          <CategoricalSearch genes={previewGenes}/>
             <Table data={previewGenes}
               rowsPerPage={previewRowsPerPage}
               isPreview={true}/>
