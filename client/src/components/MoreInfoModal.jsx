@@ -39,7 +39,7 @@ export default function () {
     )
   })
 
-  return ( (moreInfoGene != null) &&
+  return ( (moreInfoGene != null && moreInfoVisible) &&
   <Modal dimmer={'blurring'} open={moreInfoVisible}>
     {{moreInfoVisible} &&
       <Modal.Content>

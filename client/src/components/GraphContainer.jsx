@@ -14,6 +14,8 @@ export default function(){
     const [xPos, setXPos] = useStore('xPos');
     const [yPos, setYPos] = useStore('yPos');
     const [data, setData] = useStore('data');
+    // data.nodes[0]['symbolType'] = "diamond";
+    // data.nodes[0]['color'] = "blue";
     const [focusedNodeId, setFocusedNodeId] = useStore('focusedNodeId');
     // console.log("DATA FROM STORE!",data);
     // Without this nodes will stack on one another by default
@@ -24,7 +26,7 @@ export default function(){
       directed: false,
       focusAnimationDuration: 0.75,
       focusZoom: 1,
-      height: 400,
+      height: 500,
       highlightDegree: 1,
       highlightOpacity: 1,
       linkHighlightBehavior: false,
@@ -34,13 +36,13 @@ export default function(){
       panAndZoom: false,
       staticGraph: false,
       staticGraphWithDragAndDrop: false,
-      width: 800,
+      width: 1000,
       d3: {
           alphaTarget: 0.05,
           gravity: -100,
           linkLength: 100,
           linkStrength: 1,
-          //disableLinkForce: false,
+          //disableLinkForce: false,diamond
       },
       node: {
           color: "#d3d3d3",
@@ -74,7 +76,7 @@ export default function(){
           highlightFontWeight: "normal",
           labelProperty: "label",
           mouseCursor: "pointer",
-          opacity: 1,
+          opacity: 0.6,
           renderLabel: false,
           semanticStrokeWidth: false,
           strokeWidth: 1.5,
@@ -89,7 +91,7 @@ export default function(){
       "directed": true,
       "focusAnimationDuration": 0.75,
       "focusZoom": 1,
-      "height": 400,
+      "height": 600,
       "highlightDegree": 2,
       "highlightOpacity": 0.3,
       "linkHighlightBehavior": true,
@@ -99,7 +101,7 @@ export default function(){
       "panAndZoom": false,
       "staticGraph": false,
       //"staticGraphWithDragAndDrop": false,
-      "width": 800,
+      "width": 1200,
       "d3": {
         "alphaTarget": 0.05,
         "gravity": -250,
@@ -142,7 +144,7 @@ export default function(){
         "highlightFontWeight": "normal",
         "labelProperty": "label",
         "mouseCursor": "pointer",
-        "opacity": 1,
+        "opacity": 0.4,
         //"type":"STRAIGHT",
         "renderLabel": false,
         "semanticStrokeWidth": false,

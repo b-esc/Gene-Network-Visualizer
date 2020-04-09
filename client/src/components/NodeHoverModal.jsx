@@ -55,6 +55,8 @@ export default function () {
                     if(x.length > 0) setMoreInfoGene(x[0]);
                     setPreviewGenes(x);
                     setCurPreviewPage(1);
+                    setHoverFix(false);
+                    setHoverVisible(false);
                     setMoreInfoVisible(true);
                   }}>
                   More Info
