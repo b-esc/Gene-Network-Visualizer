@@ -3,7 +3,7 @@ import axios from "axios";
 import CategoricalSearch from './CategoricalSearch';
 import {CSVLink} from "react-csv";
 import { useStore } from 'react-context-hook';
-import { Modal, Header, Button, List, Accordion, Icon } from 'semantic-ui-react';
+import { Modal, Header, Button, List, Accordion, Icon, Grid } from 'semantic-ui-react';
 import Table from './Table.jsx'
 
 let endpoint = "http://localhost:8080";
@@ -81,18 +81,28 @@ export default function () {
 
           </Accordion>
 
+          <Grid centered divided columns={2}>
+            <Grid.Column textAlign='center'>
+              <h3>Download Table</h3>
+              <CSVLink data={previewGenes}>
+                <Button icon  labelPosition='left'>
+                  <Icon name='download'/>
 
+                  Export
+                </Button>
+              </CSVLink>
+            </Grid.Column>
+            <Grid.Column textAlign='center'>
+              <h3>Search Fields</h3>
+              <CategoricalSearch genes={previewGenes}/>
+            </Grid.Column>
+          </Grid>
 
           <h1>Search Preview
 
           </h1>
-          <CSVLink data={previewGenes}>
-            <Button icon  labelPosition='left'>
-              <Icon name='download'/>
-              Export
-            </Button>
-          </CSVLink>
-          <CategoricalSearch genes={previewGenes}/>
+
+
             <Table data={previewGenes}
               rowsPerPage={previewRowsPerPage}
               isPreview={true}/>

@@ -107,7 +107,7 @@ export default function(){
         "gravity": -250,
         "linkLength": 20,
         "linkStrength": function(link){
-          console.log("in link strength!",link);
+          //console.log("in link strength!",link);
           return link.distance;
           // let x = 1 / Math.min(count(link.source), count(link.target));
           // console.log(x);

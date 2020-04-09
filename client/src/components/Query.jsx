@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from "axios";
 import queryGeneByUid from '../utils/queryGeneByUid';
+import CategoricalSearch from './CategoricalSearch';
 import {CSVLink} from "react-csv";
 import { useStore } from 'react-context-hook';
 import { Popup, Button, Grid, Header, Input, Label, Dropdown, Icon } from 'semantic-ui-react';
@@ -114,6 +115,7 @@ export default function (){
               Export
             </Button>
           </CSVLink>
+          <CategoricalSearch genes={tableGenes}/>
         </Input>
     </div>
   )

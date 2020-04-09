@@ -51,7 +51,7 @@ class CategoricalSearch extends Component {
       return{
         title: item.gene_display_name,
         description: item[descKey],
-        image: faker.image.nature(),
+        image: faker.internet.avatar(),
       }
     })
     return x
@@ -68,19 +68,40 @@ class CategoricalSearch extends Component {
         results:this.arrayToSource(props.genes, "description"),
       },
       terms: {
-        name:"description",
+        name:"term_ids",
         results:this.arrayToSource(props.genes, "term_ids"),
       },
       gene_names: {
-        name:"description",
+        name:"gene_names",
         results:this.arrayToSource(props.genes, "gene_names"),
       },
     }
-    this.state = {...initialState,searchSource:newSource}
+    this.state = {...initialState,searchSource:newSource,srcGenes:props.genes}
     console.log(this.state)
   }
 
+  componentDidUpdate(prevProps, prevState){
+    if(prevProps.genes != this.props.genes){
+        console.log("SEARCH UPDATED!");
 
+        var newSource = {
+          description: {
+            name:"description",
+            results:this.arrayToSource(this.props.genes, "description"),
+          },
+          terms: {
+            name:"term_ids",
+            results:this.arrayToSource(this.props.genes, "term_ids"),
+          },
+          gene_names: {
+            name:"gene_names",
+            results:this.arrayToSource(this.props.genes, "gene_names"),
+          },
+        }
+        this.setState({searchSource:newSource});
+      }
+
+  }
 
 
 
@@ -99,7 +120,8 @@ class CategoricalSearch extends Component {
       const filteredResults = _.reduce(
         this.state.searchSource,
         (memo, data, name) => {
-          console.log("SOURCE!",source);
+          //console.log("SOURCE!",source);
+          console.log(this.state,this.props)
           console.log(this.state.searchSource)
           const results = _.filter(data.results, isMatch)
           if (results.length) memo[name] = { name, results } // eslint-disable-line no-param-reassign
