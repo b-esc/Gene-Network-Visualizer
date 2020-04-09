@@ -197,12 +197,12 @@ export default function(){
       }
 
     const onMouseOutNode = id =>{
-      console.log("ON MOUSE OUT NODE",hoverFix,!hoverFix);
+      //console.log("ON MOUSE OUT NODE",hoverFix,!hoverFix);
         if(!hoverFix){
-          console.log("HOVER VISIBLE SHOULD BE FALSE NOW!");
+          //console.log("HOVER VISIBLE SHOULD BE FALSE NOW!");
           setHoverVisible(false)
         } else{
-          console.log(hoverFix)
+          //console.log(hoverFix)
         }
       }
 
@@ -216,7 +216,7 @@ export default function(){
 
     const onMouseOverNode = id => {
       //setHighlightedNodeId(id);
-      console.log(id);
+      //console.log(id);
       setHoverUID(Number(id));
       if(!hoverVisible){
         setHoverVisible(true);
@@ -274,7 +274,7 @@ export default function(){
           {...graphProps}
           />
       </div>)
-    },[data.links,hoverFix])
+    },[data.nodes,hoverFix])
     //console.log("GRAPH PROPS!",graphProps);
     return(
       <>

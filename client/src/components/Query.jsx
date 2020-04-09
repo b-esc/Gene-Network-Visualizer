@@ -51,9 +51,14 @@ export default function (){
               Max Response
             </Header>
             <Input
-              onChange={(e) => setMaxRes(e.target.value)}
+              onChange={(e) => {
+                //console.log(e.target.value)
+                if(e!=maxRes){
+                  setMaxRes(e.target.value)
+                }
+              }}
               style={{ width: '5em' }}
-              placeholder={`${maxRes}`}>
+              >
             </Input>
           </Grid.Column>
           <Grid.Column textAlign='center'>

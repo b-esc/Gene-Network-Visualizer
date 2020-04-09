@@ -25,7 +25,6 @@ export default function () {
   const [moreInfoVisible, setMoreInfoVisible] = useStore('moreInfoVisible')
 
   const [queryText, setQueryText] = useStore('queryText')
-  const [maxRes, setMaxRes] = useStore('maxRes')
   const [isNhood, toggleNhood] = useStore('isNhood')
   const [tableGenes, setTableGenes] = useStore('tableGenes')
   const [data, setData] = useStore('data');
@@ -70,7 +69,7 @@ export default function () {
                 <Grid.Row>
                   <Button small
                   onClick={async function(){
-                    let x = await queryGeneByUid(hoverUID,maxRes,isNhood);
+                    let x = await queryGeneByUid(hoverUID,5,true);
                     setTableGenes(x.nodes);
                     setData({
                       nodes:x.nodes,
@@ -79,6 +78,7 @@ export default function () {
                     });
                     setCurPage(1);
                     setHoverVisible(false);
+                    setHoverFix(false);
                   }}>
                     New Search
                   </Button>
