@@ -83,7 +83,7 @@ export default function(){
     }
 
     const decorateGraphNodesWithInitialPositioning = (nodes) => {
-        console.log("IN DECORATE");
+        //console.log("IN DECORATE");
         if(nodes != undefined){
           return null;
         }
@@ -141,8 +141,9 @@ export default function(){
 
     const onMouseOverNode = id => {
       //setHighlightedNodeId(id);
+      //console.log(id);
+      setHoverUID(Number(id));
       if(!hoverVisible){
-        setHoverUID(id);
         setHoverVisible(true);
       }
     }
@@ -162,7 +163,7 @@ export default function(){
     useEffect(()=>{
       // console.log(highlightedNode);
       // setHighlightedNodeId(highlightedNode);
-      console.log(data,"GRAPH CONTAINER DID UPDATE!");
+      //console.log(data,"GRAPH CONTAINER DID UPDATE!");
       if(typeof data.nodes !== 'undefined'){
         let decoratedNodes = decorateGraphNodesWithInitialPositioning(data.nodes);
         if(decoratedNodes != undefined || decoratedNodes != null){
@@ -190,7 +191,7 @@ export default function(){
       onMouseOutNode:onMouseOutNode,
       onDoubleClickNode:onDoubleClickNode,
     }
-    console.log("GRAPH PROPS!",graphProps);
+    //console.log("GRAPH PROPS!",graphProps);
     return(
       <div onMouseMove={_onMouseMove}>
         <Graph

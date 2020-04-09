@@ -1,33 +1,29 @@
 import React from 'react';
 import axios from "axios";
+import previewGene from '../utils/previewGene';
 import { useStore } from 'react-context-hook';
 import { Table, Menu, Button, Icon } from 'semantic-ui-react';
 
 let allowed_table_keys = ["species","gene_display_name","gene_names","description","term_ids"];
 let atk_set = new Set(allowed_table_keys);
-let table_headers = ['Species', 'Display Name',"Gene Names",'Description', 'Term IDs','🐦 🐦']
-
-let endpoint = "http://localhost:8080";
+let table_headers = ['Species', 'Display Name',"Gene Names",'Description', 'Term IDs','Additional Info']
 
 
-export default function(props) {
-  const [curGenes, setCurGenes] = (props.isPreview) ? useStore('previewGenes') : useStore('curGenes');
-  const [curPage, setCurPage] = (props.isPreview) ? useStore('curPreviewPage') : useStore('curPage')
-  const [hoverUID, setHoverUID] = useStore('hoverUID')
-  const [rowsPerPage] = (props.isPreview) ? useStore('previewRowsPerPage') : useStore('rowsPerPage')
 
+export default function({data, rowsPerPage, isPreview}) {
+  const [gCurPage, gSetCurPage] = useStore('curPage');
+  const [curPreviewPage, setCurPreviewPage] = useStore('curPreviewPage');
+  const [moreInfoGene, setMoreInfoGene] = useStore('moreInfoGene');
+
+  const [previewGenes, setPreviewGenes] = useStore('previewGenes');
+  const [moreInfoVisible, setMoreInfoVisible] = useStore('moreInfoVisible');
+  // if(props.isPreview){
+  //   console.log("CUR PREVIEW GENES!",curGenes,previewGenes,tableGenes);
+  // }
+  let curPage = (isPreview) ? curPreviewPage : gCurPage;
   let lastIdx = rowsPerPage * curPage;
   let firstIdx = lastIdx - rowsPerPage;
-  let curPageData = curGenes.slice(firstIdx,lastIdx);
-
-  function previewGene(){
-    axios.get(endpoint + '/api/previewGene/'
-    + `${hoverUID}`).then(res =>{ return res.json }).then(res =>{
-      if(res.error) throw(res.error);
-      console.log(res);
-      console.log("FROM TABLE preview gene res successful (CALLING DEFAULT AS 910)!");
-    });
-  }
+  let curGenes = (data.length > 0) ? data.slice(firstIdx,lastIdx) : [];
 
   let render_page = curGenes.map(gene =>
     <Table.Row>
@@ -40,12 +36,17 @@ export default function(props) {
           }
         })
       }
-      {!props.isPreview &&
+      {!isPreview &&
       <Table.Cell>
         <Button animated onClick={
-            function(){
+            async function(){
               // reducer toggles infoModal visible
-              previewGene();
+              let x = await previewGene(gene.uid);
+              if(x.length > 0) setMoreInfoGene(x[0]);
+              console.log(x[0])
+              setPreviewGenes(x);
+              setCurPreviewPage(1);
+              setMoreInfoVisible(true);
             }}>
           <Button.Content visible>More Info</Button.Content>
           <Button.Content hidden>
@@ -58,7 +59,7 @@ export default function(props) {
   );
 
   let page_numbers = []
-  for(let i = 1; i <= Math.ceil(curGenes.length / rowsPerPage); i++){
+  for(let i = 1; i <= Math.ceil(data.length / rowsPerPage); i++){
     page_numbers.push(i);
   }
 
@@ -67,14 +68,20 @@ export default function(props) {
       <Menu.Item as='a'
         key={number}
         id={number}
-        onClick={(event) => setCurPage(event.target.id)}>
+        onClick={(event) => {
+          if(isPreview){
+            setCurPreviewPage(event.target.id);
+          }else{
+            gSetCurPage(event.target.id);
+          }
+        }}>
         {number}
       </Menu.Item>
     )
   });
 
   let render_titles = table_headers.map(title =>{
-    if(!(!props.isPreview && title == '🐦 🐦')){
+    if(!(isPreview && title == 'Additional Info')){
       return(<Table.HeaderCell key={title}>{title}</Table.HeaderCell>)
     }
   });
@@ -91,7 +98,7 @@ export default function(props) {
 
       <Table.Footer>
         <Table.Row>
-          <Table.HeaderCell colSpan = {!props.isPreview ? '6' : '5'}>
+          <Table.HeaderCell colSpan = {!isPreview ? '6' : '5'}>
             <Menu floated='right' pagination id="page-numbers">
               {render_numbers}
             </Menu>

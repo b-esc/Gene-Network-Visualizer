@@ -8,11 +8,11 @@ import (
 )
 
 type Link struct {
-	Source         string
-	Target         string
-	Distance       float64
-	StrokeWidth    float32 // 1.5
-	HighlightColor string  //"RED"
+	Source         string		`json:"source"`
+	Target         string		`json:"target"`
+	Distance       float64	`json:"distance"`
+	StrokeWidth    float32	`json:"strokeWidth"`
+	HighlightColor string  	`json:"highlightColor"`
 }
 
 // returns pointer, shorthand init of struct
@@ -45,20 +45,21 @@ type EdgesPair struct {
 type Gene struct {
 	// reactd3graph
 	// id == uid, label == display name
-	Id    string
-	Label string
+	Id    						string		`json:"id"`
+	Label 						string		`json:"label"`
 	// core information
-	Uid               string
-	Species           string
-	Description       string
-	Gene_display_name string
-	Color             string
-	Term_ids          []string
-	Gene_names        []string
-	Edges             EdgesPair
+	Uid               string		`json:"uid"`
+	Species           string		`json:"species"`
+	Description       string		`json:"description"`
+	Gene_display_name string		`json:"gene_display_name"`
+	Color             string		`json:"color"`
+	Term_ids          []string	`json:"term_ids"`
+	Gene_names        []string	`json:"gene_names"`
+	Edges             EdgesPair	`json:"edges"`
 }
 
 func NewGene(u, s, d, gdn, c, ti, gn string, parsedEdges map[string]EdgesPair) *Gene {
+	//description := strings.Split(d,";")
 	term_ids := strings.Split(ti, "|")
 	gene_names := strings.Split(gn, "|")
 	new_edges := parsedEdges[u]

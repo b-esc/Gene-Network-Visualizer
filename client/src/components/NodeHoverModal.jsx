@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from "axios";
-import LowercaseKeys from '../clientUtils/LowercaseKeys';
+import previewGene from '../utils/previewGene';
 import { useStore } from 'react-context-hook';
 import { Transition, Grid, Header, Button } from 'semantic-ui-react';
 
@@ -15,21 +15,15 @@ export default function () {
   const [xPos, setXPos] = useStore('xPos')
   const [yPos, setYPos] = useStore('yPos')
 
+  const [moreInfoGene, setMoreInfoGene] = useStore('moreInfoGene');
+
   const [previewGenes, setPreviewGenes] = useStore('previewGenes')
+  const [curPreviewPage, setCurPreviewPage] = useStore('curPreviewPage');
 
 
   const [moreInfoVisible, setMoreInfoVisible] = useStore('moreInfoVisible')
 
-  function previewGene(){
-    axios.get(endpoint + '/api/previewGene/'
-    + `${hoverUID}`).then(res =>{
-      if(res.error) throw(res.error);
-      let nodes = LowercaseKeys(res.data.Genes);
-      setPreviewGenes(nodes);
-      console.log(res);
-      console.log("preview gene res successful (CALLING DEFAULT AS 910)!");
-    });
-  }
+
 
   return(
     <Transition.Group
@@ -47,11 +41,14 @@ export default function () {
               columns={2}>
               <Grid.Column textAlign='center'>
                 <Header as='h2'>
-                  'hovered display name'
+                  {`Gene UID: ${hoverUID}`}
                 </Header>
-                <Button onClick={() =>{
+                <Button onClick={async function(){
+                    let x = await previewGene(hoverUID)
+                    if(x.length > 0) setMoreInfoGene(x[0]);
+                    setPreviewGenes(x);
+                    setCurPreviewPage(1);
                     setMoreInfoVisible(true);
-                    previewGene();
                   }}>
                   More Info
                 </Button>

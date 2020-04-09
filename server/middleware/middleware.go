@@ -7,7 +7,7 @@ import (
 	. "github.com/b-esc/carolyns-web/server/models"
 	"github.com/deckarep/golang-set"
 	"github.com/gorilla/mux" // routing
-	"github.com/k0kubun/pp"
+	//"github.com/k0kubun/pp"
 	. "github.com/prologic/bitcask"
 	"log"
 	"net/http"
@@ -65,8 +65,9 @@ func PreviewGeneByUid(w http.ResponseWriter, r *http.Request) {
 	uid := vars["uid"]
 
 	genes := buildPreviewResponse(uid)
+	// pp.Print(genes,"GENES FROM PREVIEW RESPONSE");
 	ResData := struct{
-		Gene []Gene
+		Genes []Gene
 	}{
 		genes,
 	}
@@ -153,6 +154,7 @@ func linkSliceToSet(links []Link) mapset.Set {
 func buildPreviewResponse(uid string) []Gene {
 	rootG := getGeneByUid(uid, store)
 	_, genes, _ := nMostRelatedGenesLinks(rootG.Edges.Outgoing, 10, store)
+	genes = append(genes, rootG)
 	return genes
 }
 

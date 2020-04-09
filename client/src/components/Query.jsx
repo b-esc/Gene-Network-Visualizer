@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from "axios";
-import LowercaseKeys from '../clientUtils/LowercaseKeys';
 import { useStore } from 'react-context-hook';
 import { Popup, Button, Grid, Header, Input, Label, Dropdown } from 'semantic-ui-react';
 
@@ -32,22 +31,20 @@ export default function (){
 
   const [data, setData] = useStore('data');
 
+  const [curPage, setCurPage] = useStore('curPage');
   function queryGene(){
     axios.get(endpoint + '/api/queryGene/'
     + `${queryText}/${maxRes}/${isNhood}`).then(res =>{
       if(res.error) throw(res.error);
-      let nodes = LowercaseKeys(res.data.Genes);
-      let links = LowercaseKeys(res.data.Links);
+      let nodes = res.data.Genes;
+      let links = res.data.Links;
       setTableGenes(nodes);
       setData({
         nodes:nodes,
         links:links,
-        focusedNodeId:nodes[0]
+        focusedNodeId:nodes[0].id
       });
-      console.log(res);
-      console.log(res.data);
-      console.log("query gene res successful!");
-      console.log("BE SURE TO SET CURRENT PAGE TO 1");
+      setCurPage(1);
     });
   }
 

@@ -38,9 +38,9 @@ const initialState = {
   },
   // More Info Modal
   moreInfoVisible: false,
-  moreInfoGene: {uid: -1, species:"initial species", gene_names:"init gnames",
+  moreInfoGene: {uid: -1, species:"initial species", gene_names:['gname1,gname2'],
                 description: "init desc", gene_display_name: "init gdisplay",
-                color:"white", term_ids:"init term_ids", edges:"edges"},
+                color:"white", term_ids:["go1","go2"], edges:"edges"},
   // Main Table Params
   tableGenes: [],
   previewGenes: [],
@@ -48,6 +48,8 @@ const initialState = {
   rowsPerPage: 8,
   curPreviewPage: 1,
   previewRowsPerPage:4,
+  gnDrop: false,
+  tiDrop: false,
 }
 
 const storeConfig ={
