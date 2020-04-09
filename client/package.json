@@ -10,6 +10,7 @@
     "d3": "^5.15.1",
     "react": "^16.13.1",
     "react-context-hook": "^1.2.1",
+    "react-csv": "^2.0.3",
     "react-d3-graph": "^2.4.1",
     "react-dom": "^16.13.1",
     "react-pure-lifecycle": "^3.0.0",

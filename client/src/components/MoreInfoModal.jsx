@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from "axios";
+import {CSVLink} from "react-csv";
 import { useStore } from 'react-context-hook';
 import { Modal, Header, Button, List, Accordion, Icon } from 'semantic-ui-react';
 import Table from './Table.jsx'
@@ -51,15 +52,14 @@ export default function () {
               {moreInfoGene.gene_display_name}
             </h1>
           </Header>
-          <h2>Description:</h2>
-          <p>{moreInfoGene.description}</p>
+          <h1>Description:</h1>
+          <h3 style={{color:"gray"}}>{moreInfoGene.description}</h3>
 
-          <h2>Species:</h2>
-          <p>{moreInfoGene.species}</p>
+          <h1>Species:{moreInfoGene.species}</h1>
 
           <Accordion exclusive={false}>
             <Accordion.Title active={gnDrop===true} onClick={()=>setGnDrop(!gnDrop)}>
-              <h2>Gene Names <Icon name='dropdown'/></h2>
+              <h1>Gene Names <Icon name='dropdown'/></h1>
 
             </Accordion.Title>
             <Accordion.Content active={gnDrop===true}>
@@ -69,7 +69,7 @@ export default function () {
             </Accordion.Content>
 
             <Accordion.Title active={tiDrop===true} onClick={()=>setTiDrop(!tiDrop)}>
-              <h2>Term ids <Icon name='dropdown'/></h2>
+              <h1>Term ids <Icon name='dropdown'/></h1>
 
             </Accordion.Title>
             <Accordion.Content active={tiDrop===true}>
@@ -82,8 +82,15 @@ export default function () {
 
 
 
-          <h1>Most related (doc2vec) table preview:</h1>
+          <h1>Search Preview
 
+          </h1>
+          <CSVLink data={previewGenes}>
+            <Button icon  labelPosition='left'>
+              <Icon name='download'/>
+              Export
+            </Button>
+          </CSVLink>
             <Table data={previewGenes}
               rowsPerPage={previewRowsPerPage}
               isPreview={true}/>

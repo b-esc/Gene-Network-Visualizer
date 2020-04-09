@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from "axios";
+import queryGeneByUid from '../utils/queryGeneByUid';
 import previewGene from '../utils/previewGene';
 import { useStore } from 'react-context-hook';
 import { Transition, Grid, Header, Button } from 'semantic-ui-react';
@@ -22,6 +23,13 @@ export default function () {
 
 
   const [moreInfoVisible, setMoreInfoVisible] = useStore('moreInfoVisible')
+
+  const [queryText, setQueryText] = useStore('queryText')
+  const [maxRes, setMaxRes] = useStore('maxRes')
+  const [isNhood, toggleNhood] = useStore('isNhood')
+  const [tableGenes, setTableGenes] = useStore('tableGenes')
+  const [data, setData] = useStore('data');
+  const [curPage, setCurPage] = useStore('curPage');
 
 
 
@@ -60,7 +68,18 @@ export default function () {
                 <br>
                 </br>
                 <Grid.Row>
-                  <Button small>
+                  <Button small
+                  onClick={async function(){
+                    let x = await queryGeneByUid(hoverUID,maxRes,isNhood);
+                    setTableGenes(x.nodes);
+                    setData({
+                      nodes:x.nodes,
+                      links:x.links,
+                      focusedNodeId:x.nodes[0].id
+                    });
+                    setCurPage(1);
+                    setHoverVisible(false);
+                  }}>
                     New Search
                   </Button>
                 </Grid.Row>

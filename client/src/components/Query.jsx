@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from "axios";
+import queryGeneByUid from '../utils/queryGeneByUid';
+import {CSVLink} from "react-csv";
 import { useStore } from 'react-context-hook';
-import { Popup, Button, Grid, Header, Input, Label, Dropdown } from 'semantic-ui-react';
+import { Popup, Button, Grid, Header, Input, Label, Dropdown, Icon } from 'semantic-ui-react';
 
 let endpoint = "http://localhost:8080";
 
@@ -21,7 +23,6 @@ const dropdown_opts = [
 
 // "/api/queryGene/{uid}/{maxRes}/{isNhood}"
 
-
 export default function (){
   const [queryText, setQueryText] = useStore('queryText')
   const [maxRes, setMaxRes] = useStore('maxRes')
@@ -32,21 +33,7 @@ export default function (){
   const [data, setData] = useStore('data');
 
   const [curPage, setCurPage] = useStore('curPage');
-  function queryGene(){
-    axios.get(endpoint + '/api/queryGene/'
-    + `${queryText}/${maxRes}/${isNhood}`).then(res =>{
-      if(res.error) throw(res.error);
-      let nodes = res.data.Genes;
-      let links = res.data.Links;
-      setTableGenes(nodes);
-      setData({
-        nodes:nodes,
-        links:links,
-        focusedNodeId:nodes[0].id
-      });
-      setCurPage(1);
-    });
-  }
+
 
   return (
     <div>
@@ -103,10 +90,25 @@ export default function (){
             setQueryText(e.target.value);
           }}/>
           <Button
-            onClick={() => queryGene()}
+            onClick={async function(){
+              let x = await queryGeneByUid(queryText,maxRes,isNhood);
+              setTableGenes(x.nodes);
+              setData({
+                nodes:x.nodes,
+                links:x.links,
+                focusedNodeId:x.nodes[0].id
+              });
+              setCurPage(1);
+            }}
             size="huge">
             Execute 1 (Gene Names)
           </Button>
+          <CSVLink data={data.nodes}>
+            <Button icon size="huge" labelPosition='left'>
+              <Icon name='download'/>
+              Export
+            </Button>
+          </CSVLink>
         </Input>
     </div>
   )
