@@ -11,6 +11,7 @@ import Table from "./components/Table";
 export default function (){
   const [tableGenes] = useStore('tableGenes');
   const [rowsPerPage] = useStore('rowsPerPage');
+  
   return (
       <Segment textAlign="center" vertical>
       <div>

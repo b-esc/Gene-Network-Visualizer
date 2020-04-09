@@ -1,5 +1,5 @@
 import { useStore } from 'react-context-hook';
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { Graph, Link, d3 } from "react-d3-graph";
 
 
@@ -18,29 +18,99 @@ export default function(){
     // console.log("DATA FROM STORE!",data);
     // Without this nodes will stack on one another by default
 
-
+    let altConfig ={
+      automaticRearrangeAfterDropNode: false,
+      collapsible: false,
+      directed: false,
+      focusAnimationDuration: 0.75,
+      focusZoom: 1,
+      height: 400,
+      highlightDegree: 1,
+      highlightOpacity: 1,
+      linkHighlightBehavior: false,
+      maxZoom: 8,
+      minZoom: 0.1,
+      nodeHighlightBehavior: false,
+      panAndZoom: false,
+      staticGraph: false,
+      staticGraphWithDragAndDrop: false,
+      width: 800,
+      d3: {
+          alphaTarget: 0.05,
+          gravity: -100,
+          linkLength: 100,
+          linkStrength: 1,
+          //disableLinkForce: false,
+      },
+      node: {
+          color: "#d3d3d3",
+          fontColor: "black",
+          fontSize: 8,
+          fontWeight: "normal",
+          highlightColor: "SAME",
+          highlightFontSize: 8,
+          highlightFontWeight: "normal",
+          highlightStrokeColor: "SAME",
+          highlightStrokeWidth: "SAME",
+          labelProperty: "id",
+          labelPosition: null,
+          mouseCursor: "pointer",
+          opacity: 1,
+          renderLabel: true,
+          size: 200,
+          strokeColor: "none",
+          strokeWidth: 1.5,
+          svg: "",
+          symbolType: "circle",
+          viewGenerator: null,
+      },
+      link: {
+          color: "#d3d3d3",
+          fontColor: "black",
+          fontSize: 8,
+          fontWeight: "normal",
+          highlightColor: "SAME",
+          highlightFontSize: 8,
+          highlightFontWeight: "normal",
+          labelProperty: "label",
+          mouseCursor: "pointer",
+          opacity: 1,
+          renderLabel: false,
+          semanticStrokeWidth: false,
+          strokeWidth: 1.5,
+          markerHeight: 6,
+          markerWidth: 6,
+          type: "STRAIGHT",
+      }
+    }
     let config = {
       "automaticRearrangeAfterDropNode": false,
       "collapsible": false,
       "directed": true,
-      "focusAnimationDuration": 2,
-      "focusZoom": 1.5,
+      "focusAnimationDuration": 0.75,
+      "focusZoom": 1,
       "height": 400,
-      "highlightDegree": 1,
-      "highlightOpacity": 1,
+      "highlightDegree": 2,
+      "highlightOpacity": 0.3,
       "linkHighlightBehavior": true,
       "maxZoom": 5,
-      "minZoom": 1,
+      "minZoom": 0.5,
       "nodeHighlightBehavior": true,
       "panAndZoom": false,
       "staticGraph": false,
-      "staticGraphWithDragAndDrop": false,
+      //"staticGraphWithDragAndDrop": false,
       "width": 800,
       "d3": {
         "alphaTarget": 0.05,
-        "gravity": -100,
-        "linkLength": 45,
-        "linkStrength": 1
+        "gravity": -250,
+        "linkLength": 20,
+        "linkStrength": function(link){
+          console.log("in link strength!",link);
+          return link.distance;
+          // let x = 1 / Math.min(count(link.source), count(link.target));
+          // console.log(x);
+          // return x;
+        },
       },
       "node": {
         "color": "#d3d3d3",
@@ -73,7 +143,7 @@ export default function(){
         "labelProperty": "label",
         "mouseCursor": "pointer",
         "opacity": 1,
-        "type":"STRAIGHT",
+        //"type":"STRAIGHT",
         "renderLabel": false,
         "semanticStrokeWidth": false,
         "strokeWidth": 1.5,
@@ -108,18 +178,18 @@ export default function(){
     }
 
     // Single clicking zooms into a node
-    const nodeClick = nodeId =>{
-      if(focusedNodeId !== nodeId){
-        focusNode(nodeId);
-      } else{
-        focusNode(null);
-      }
-    }
+    // const nodeClick = nodeId =>{
+    //   if(focusedNodeId !== nodeId){
+    //     focusNode(nodeId);
+    //   } else{
+    //     focusNode("");
+    //   }
+    // }
 
 
     // Update X Y position to move NodeExt.jsx
     const _onMouseMove = (e) => {
-        if(!hoverFix){
+        if(!hoverFix && !hoverVisible){
           setXPos(e.nativeEvent.offsetX)
           setYPos(e.nativeEvent.offsetY)
           // this.props.updateHoverCords(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
@@ -127,21 +197,26 @@ export default function(){
       }
 
     const onMouseOutNode = id =>{
-      //setHighlightedNodeId("");
-        // Toggle hover modal handles the case when hoverFix is true
+      console.log("ON MOUSE OUT NODE",hoverFix,!hoverFix);
         if(!hoverFix){
+          console.log("HOVER VISIBLE SHOULD BE FALSE NOW!");
           setHoverVisible(false)
+        } else{
+          console.log(hoverFix)
         }
       }
 
     const onDoubleClickNode = id => {
+      if(focusedNodeId !== id){
+        focusNode(id);
+      }
         setHoverUID(Number(id));
         setHoverFix(true);
       }
 
     const onMouseOverNode = id => {
       //setHighlightedNodeId(id);
-      //console.log(id);
+      console.log(id);
       setHoverUID(Number(id));
       if(!hoverVisible){
         setHoverVisible(true);
@@ -160,21 +235,21 @@ export default function(){
     // },[]);
     //
     // componentDidUpdate
-    useEffect(()=>{
-      // console.log(highlightedNode);
-      // setHighlightedNodeId(highlightedNode);
-      //console.log(data,"GRAPH CONTAINER DID UPDATE!");
-      if(typeof data.nodes !== 'undefined'){
-        let decoratedNodes = decorateGraphNodesWithInitialPositioning(data.nodes);
-        if(decoratedNodes != undefined || decoratedNodes != null){
-          setData(data,()=>{
-            setTimeout(function(){
-              focusNode(data.nodes[0].id)
-            }, 500);
-          })
-        }
-      }
-    },[data.links]);
+    // useEffect(()=>{
+    //   // console.log(highlightedNode);
+    //   // setHighlightedNodeId(highlightedNode);
+    //   //console.log(data,"GRAPH CONTAINER DID UPDATE!");
+    //   if(typeof data.nodes !== 'undefined'){
+    //     let decoratedNodes = decorateGraphNodesWithInitialPositioning(data.nodes);
+    //     if(decoratedNodes != undefined || decoratedNodes != null){
+    //       setData(data,()=>{
+    //         setTimeout(function(){
+    //           focusNode(data.nodes[0].id)
+    //         }, 500);
+    //       })
+    //     }
+    //   }
+    // },[data.links]);
 
     const dummyData = {
       nodes: [{id:"dInitialNode1",color:"black",symbolType:"diamond"},
@@ -185,19 +260,26 @@ export default function(){
       id: "graph-id",
       data: (typeof data.nodes !== 'undefined') ? {...data, focusedNodeId: focusedNodeId} : {...dummyData},
       config: config,
-      onClickNode:nodeClick,
+      //onClickNode:nodeClick,
       onClickGraph:clickGraph,
       onMouseOverNode:onMouseOverNode,
       onMouseOutNode:onMouseOutNode,
       onDoubleClickNode:onDoubleClickNode,
     }
-    //console.log("GRAPH PROPS!",graphProps);
-    return(
+
+    const memoizedGraph = useMemo(()=>{
+      return(
       <div onMouseMove={_onMouseMove}>
         <Graph
           {...graphProps}
           />
-      </div>
+      </div>)
+    },[data.links,hoverFix])
+    //console.log("GRAPH PROPS!",graphProps);
+    return(
+      <>
+      {memoizedGraph}
+      </>
     )
 }
 //          ref = "graph"

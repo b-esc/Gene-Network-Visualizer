@@ -37,7 +37,7 @@ export default function () {
     <Transition.Group
       animation={'fade down'}
       duration={300}>
-      { hoverVisible &&
+      { (hoverVisible || hoverFix) &&
         (
           <div style={{ backgroundColor: 'rgba(237, 235, 237,0.3)',
             padding: '1em', position: 'absolute',
