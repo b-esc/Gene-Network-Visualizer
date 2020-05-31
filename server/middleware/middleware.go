@@ -1,3 +1,9 @@
+// ben.escobar.ben@gmail.com
+
+// defines logic and handling of users' queries
+// functions starting with a capital letter
+// are called when certain endpoints are invoked (see router/router.go)
+
 package middleware
 
 import (
@@ -23,6 +29,8 @@ var storeErr error
 // connect to bitcask
 func init() {
 	fp, _ := filepath.Abs("database/store")
+	// adjust WithMaxValueSize up as needed,
+	// default was too small for samples during development
 	store, storeErr = Open(fp, WithMaxValueSize(20777216))
 	if storeErr != nil {
 		log.Fatal(storeErr)
@@ -32,29 +40,45 @@ func init() {
 
 /* route functions */
 
-// return node/link objects + accessory information for reactd3js
+// QueryGeneByUid is primarily a debugging tool for table + visualizer
+// using the UIDs in the original gene_info csv
+// takes a user's UID query, finds N most related genes in dataset (maxRes),
+// filters out all edges not explicitly outgoing from root UID if isNhood = false
+// returns an object containing properties:
+// genes: array of Gene objects containing relevant edges
+// links: array of edges to render (isNhood may impact this)
 func QueryGeneByUid(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
+	// all of our variables come via the url
+	// see /client/src/components/utils/queryGeneByUid.js
 	vars := mux.Vars(r)
 	uid := vars["uid"]
 	maxRes, _ := strconv.Atoi(vars["maxRes"])
 	isNhood, _ := strconv.ParseBool(vars["isNhood"])
 	fmt.Println(uid,maxRes,isNhood)
+	// golang may return multiple variables
 	genes, links := buildQueryResponse(uid, maxRes, isNhood)
+	// ResData must be capitalized as its leaving this file (to our frontend)
 	ResData := struct{
+		// same goes for the properties, capitalized first letter
 		Genes	[]Gene
 		Links []Link
 	}{
 		genes,
 		links,
 	}
+	// how data is sent back to client,
+	// our ResponseWriter writes json encoded ResData object
 	json.NewEncoder(w).Encode(ResData)
 }
 
+// PreviewGeneByUid replicates QueryGeneByUid's behavior but only prepares
+// the response data with genes to be displayed in a smaller table (no graph)
+// This is called whenever 'more info' is selected by the user on the clientside
 func PreviewGeneByUid(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -77,7 +101,7 @@ func PreviewGeneByUid(w http.ResponseWriter, r *http.Request) {
 
 /* utils */
 
-// takes string as key, handles tedious unseralization
+// helper function handling easy retreival of genes from our database
 func getGeneByUid(uid string, b *Bitcask) Gene {
 	byteUid, err := b.Get([]byte(uid))
 	if err != nil {
@@ -91,6 +115,7 @@ func getGeneByUid(uid string, b *Bitcask) Gene {
 	return g
 }
 
+// helper function converting a map of Links to an array of Links
 func mapToArr(m map[string]Link) []Link {
 	var arr []Link
 	for _, val := range m {
@@ -99,6 +124,8 @@ func mapToArr(m map[string]Link) []Link {
 	return arr
 }
 
+// finds the n most related genes (via distance) and aggregates Edges to render
+// on the visualizer. See getNhoodLinks below.
 // returns list of genes, list of outgoing edges
 func nMostRelatedGenesLinks(outgoing map[string]Link, n int, b *Bitcask) ([]string, []Gene, []Link) {
 	arr := mapToArr(outgoing)
@@ -121,6 +148,8 @@ func nMostRelatedGenesLinks(outgoing map[string]Link, n int, b *Bitcask) ([]stri
 	return geneUids, genes, links
 }
 
+// Aggregates links that are relevant to resultant Genes. Filters duplicates
+// and includes links not directly connected to root Gene.
 func getNhoodLinks(uidSet mapset.Set, linkStrSet mapset.Set, genes []Gene) []Link {
 	var nhoodLinks []Link
 	for _, curGene := range genes {
@@ -143,6 +172,7 @@ func getNhoodLinks(uidSet mapset.Set, linkStrSet mapset.Set, genes []Gene) []Lin
 	return nhoodLinks
 }
 
+// Array to HashSet (for duplicate fitering)
 func linkSliceToSet(links []Link) mapset.Set {
 	linkSet := mapset.NewSet()
 	for _, curLink := range links {
@@ -151,6 +181,7 @@ func linkSliceToSet(links []Link) mapset.Set {
 	return linkSet
 }
 
+// Changes logic to be more minimal for preview queries
 func buildPreviewResponse(uid string) []Gene {
 	rootG := getGeneByUid(uid, store)
 	_, genes, _ := nMostRelatedGenesLinks(rootG.Edges.Outgoing, 10, store)

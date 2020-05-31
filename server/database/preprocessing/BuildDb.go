@@ -1,3 +1,9 @@
+// ben.escobar.ben@gmail.com
+
+// builds a Bitcask database from two valid info/edge csv files
+// Usage: go run ./BuildDb.go info.csv edges.csv [-d]
+// [-d as third arg clears current db]
+
 package main
 
 import (
@@ -17,11 +23,9 @@ import (
 )
 
 func main() {
-	// clear previous store
-
 	start := time.Now()
-	// Doesn't include program name
 
+	// Doesn't include program name
 	args := os.Args[1:]
 
 	if len(args) < 2 || args[1] == "-h" {
@@ -29,6 +33,7 @@ func main() {
 		os.Exit(0)
 	}
 
+	// clear db if specified by user
 	if len(args) > 2 && args[2] == "-d" {
 		fmt.Println("-d as third arg.. clearing current db..")
 		fp, _ := filepath.Abs("../store")
@@ -45,11 +50,17 @@ func main() {
 
 	fmt.Printf("\n Now Loading \n Info: %s | Edges: %s \n", infoFilename, edgesFilename)
 
+	// parse edges before merging with genes
 	parsedEdges := parseEdges(edgesFilename)
 	finalizedGenes := parseGeneInfo(infoFilename, parsedEdges)
+
+	// opens up our store/DB, tweak max value size up as needed
 	store, _ := bitcask.Open("../store", bitcask.WithMaxValueSize(20777216))
+	// before closing the program close our DB
 	defer store.Close()
 
+	// to read / write from our DB, we follow common pattern of
+	// marshalling / unmarshalling data before put/get what we want
 	for k, v := range finalizedGenes {
 		jsonV, err := json.Marshal(v)
 		if err != nil {
@@ -60,8 +71,8 @@ func main() {
 			log.Fatal(err)
 		}
 	}
-	//q := GetGeneByUid("910", store)
-	//pp.Println(q)
+
+	// give performance details to user
 	storeStats, err := store.Stats()
 	if err != nil {
 		log.Fatal(err)
@@ -75,6 +86,9 @@ func main() {
 	}
 }
 
+// parseGeneInfo matches genes from 'info.csv' with finished edges
+// every edge 'source' and 'target' should be present in our 'info.csv'
+// see models/models.go => Gene, LineToGene
 func parseGeneInfo(infoFilename string, parsedEdges map[string]EdgesPair) map[string]Gene {
 	finalizedGenes := make(map[string]Gene)
 
@@ -105,7 +119,8 @@ func parseGeneInfo(infoFilename string, parsedEdges map[string]EdgesPair) map[st
 	return finalizedGenes
 }
 
-// returns map of uid => EdgesPair (see: models/EdgesPair)
+// parseEdges returns a mapping of Gene UID's to incoming / outgoing edges
+// see models/models.go => EdgesPair, Link, LineToLink
 func parseEdges(edgesFilename string) map[string]EdgesPair {
 	// return target
 	parsedEdges := make(map[string]EdgesPair)
