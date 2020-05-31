@@ -11,13 +11,14 @@ type Link struct {
 	Source         string		`json:"source"`
 	Target         string		`json:"target"`
 	Distance       float64	`json:"distance"`
-	StrokeWidth    float32	`json:"strokeWidth"`
+	StrokeWidth    float64	`json:"strokeWidth"`
 	HighlightColor string  	`json:"highlightColor"`
 }
 
 // returns pointer, shorthand init of struct
 func NewLink(source, target string, distance float64) *Link {
-	return &Link{source, target, distance, 1.5, "RED"}
+	// changed strokewidth to distance !
+	return &Link{source, target, distance, distance, "RED"}
 }
 
 func (l Link) ToString() string {

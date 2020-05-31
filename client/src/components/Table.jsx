@@ -29,10 +29,24 @@ export default function({data, rowsPerPage, isPreview}) {
     <Table.Row>
       {
         allowed_table_keys.map(key =>{
-          if(atk_set.has(key)){
+          if(key == "description"){
+            const strToArr = gene[key].split(";");
+            const arrayToTable = strToArr.map((d) => <li style={{"list-style": "none"}}>{d}</li>);
+            return(<Table.Cell>
+              {arrayToTable}
+            </Table.Cell>)
+          }
+          else if(atk_set.has(key) && !(Array.isArray(gene[key]) && (gene[key].length > 1)) ){
             return(<Table.Cell>
               {gene[key]}
             </Table.Cell>)
+          }
+          else if(Array.isArray(gene[key]) && (gene[key].length > 1)){
+            const arrayToTable = gene[key].map((d) => <li style={{"list-style": "none"}}>{d}</li>);
+            return(<Table.Cell>
+              {arrayToTable}
+            </Table.Cell>)
+
           }
         })
       }
@@ -43,7 +57,7 @@ export default function({data, rowsPerPage, isPreview}) {
               // reducer toggles infoModal visible
               let x = await previewGene(gene.uid);
               if(x.length > 0) setMoreInfoGene(x[0]);
-              console.log(x[0])
+              //console.log(x[0])
               setPreviewGenes(x);
               setCurPreviewPage(1);
               setMoreInfoVisible(true);
