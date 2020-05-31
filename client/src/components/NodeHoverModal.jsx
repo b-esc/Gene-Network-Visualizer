@@ -48,7 +48,7 @@ export default function () {
               columns={2}>
               <Grid.Column textAlign='center'>
                 <Header as='h2'>
-                  {`Gene UID: ${hoverUID}`}
+                  {`${tableGenes.find(x => x.uid === hoverUID.toString(10)).gene_display_name}`}
                 </Header>
                 <Button onClick={async function(){
                     let x = await previewGene(hoverUID)

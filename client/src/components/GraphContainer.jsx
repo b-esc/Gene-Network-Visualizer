@@ -8,6 +8,7 @@ import { Graph, Link, d3 } from "react-d3-graph";
 export default function(){
     const isCancelled = useRef;
 
+    const [tableGenes] = useStore('tableGenes');
     const [hoverVisible, setHoverVisible] = useStore('hoverVisible');
     const [hoverFix, setHoverFix] = useStore('hoverFix');
     const [hoverUID, setHoverUID] = useStore('hoverUID');
@@ -216,9 +217,10 @@ export default function(){
         setHoverFix(true);
       }
 
-    const onMouseOverNode = id => {
+    const onMouseOverNode = (id) => {
       //setHighlightedNodeId(id);
       //console.log(id);
+      //console.log(label,lou);
       setHoverUID(Number(id));
       if(!hoverVisible){
         setHoverVisible(true);
