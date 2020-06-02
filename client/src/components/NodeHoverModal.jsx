@@ -7,10 +7,18 @@ import { Transition, Grid, Header, Button } from 'semantic-ui-react';
 
 let endpoint = "http://localhost:8080";
 
-// "/api/previewGene/{uid}"
-
+/*
+* Modal that follows our cursor
+* when we hover over a node on visualizer
+* Visibility triggered by hoverVisible (handled in GraphContainer)
+*
+* Usage of async function (){ ... } is to use await
+* avoiding conflicts with functions not running in order
+*/
 export default function () {
+// Relevant to this component
   const [hoverVisible, setHoverVisible] = useStore('hoverVisible')
+// Double clicking a node fixes it to the screen
   const [hoverFix, setHoverFix] = useStore('hoverFix')
   const [hoverUID, setHoverUID] = useStore('hoverUID')
   const [xPos, setXPos] = useStore('xPos')
@@ -22,6 +30,7 @@ export default function () {
   const [curPreviewPage, setCurPreviewPage] = useStore('curPreviewPage');
 
 
+// MoreInfo is MoreInfoModal.jsx
   const [moreInfoVisible, setMoreInfoVisible] = useStore('moreInfoVisible')
 
   const [queryText, setQueryText] = useStore('queryText')

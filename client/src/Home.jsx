@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useStore } from 'react-context-hook';
-
 import { Segment, Header, Image, Grid } from 'semantic-ui-react';
 import GraphContainer from "./components/GraphContainer";
 import NodeHoverModal from "./components/NodeHoverModal";
@@ -8,10 +7,16 @@ import MoreInfoModal from "./components/MoreInfoModal";
 import Query from "./components/Query";
 import Table from "./components/Table";
 
+/**
+* Container for visualizer + table view
+* Defines formatting for our application view
+* Details on SemanticUI-React's documentation
+* @see App.jsx Home's parent
+*/
 export default function (){
   const [tableGenes] = useStore('tableGenes');
   const [rowsPerPage] = useStore('rowsPerPage');
-  
+
   return (
       <Segment textAlign="center" vertical>
       <div>
@@ -26,7 +31,7 @@ export default function (){
       <div id="graph-bridge-container">
         <GraphContainer/>
       </div>
-
+      {/* These modals are always available but not always visible*/}
       <NodeHoverModal/>
       <MoreInfoModal/>
 
@@ -36,9 +41,12 @@ export default function (){
               </Header>
           </Grid.Row>
           <Grid.Row>
+
               <Query/>
+
           </Grid.Row>
           <Grid.Row>
+          {/* We pass data to be displayed as props (ideally) */}
               <Table data={tableGenes}
                 rowsPerPage={rowsPerPage}
                 isPreview={false}/>

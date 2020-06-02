@@ -8,7 +8,15 @@ import Table from './Table.jsx'
 
 let endpoint = "http://localhost:8080";
 
+/*
+* MoreInfo Modal, providing formatted details
+* on a single database entry.
+*
+* We can get here via the main table or
+* clicking a node => more info on the graph
+*/
 export default function () {
+  // MoreInfoGene is the selected gene of interest
   const [moreInfoGene] = useStore('moreInfoGene');
   const [moreInfoVisible, setMoreInfoVisible] = useStore('moreInfoVisible');
   const [previewGenes] = useStore('previewGenes');
@@ -16,6 +24,7 @@ export default function () {
   const [gnDrop, setGnDrop] = useStore('gnDrop');
   const [tiDrop, setTiDrop] = useStore('tiDrop');
 
+// There's usually many Gene names
   let geneNames = moreInfoGene.gene_names.map(name =>{
     return(
       <List.Item>
@@ -28,6 +37,7 @@ export default function () {
     )
   })
 
+// Same with GoTerms
   let goTerms = moreInfoGene.term_ids.map(term_id =>{
     return(
       <List.Item>
@@ -40,6 +50,8 @@ export default function () {
     )
   })
 
+// If we have a gene of interest and this modal is supposed to be visible..
+// Render (conditional rendering)
   return ( (moreInfoGene != null && moreInfoVisible) &&
   <Modal dimmer={'blurring'} open={moreInfoVisible}>
     {{moreInfoVisible} &&
@@ -108,6 +120,7 @@ export default function () {
               isPreview={true}/>
 
         </Modal.Description>
+        {/* Many functions are inlined / interweaved as so */}
         <Button onClick={() => setMoreInfoVisible(!moreInfoVisible)}>Close</Button>
       </Modal.Content>
     }

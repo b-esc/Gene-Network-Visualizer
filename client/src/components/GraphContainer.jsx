@@ -3,11 +3,16 @@ import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { Graph, Link, d3 } from "react-d3-graph";
 
 
-// hack to use hooks with above class
-// we use class as we need finite control over certain lifecycle methods
+/*
+* Container for our visualizer
+* Specifies configuration / styling for our data
+* Before passing it to Reactd3Graph
+*
+* Probably leave everything below alone or
+* ensure regression is tested before after every change
+*/
 export default function(){
     const isCancelled = useRef;
-
     const [tableGenes] = useStore('tableGenes');
     const [hoverVisible, setHoverVisible] = useStore('hoverVisible');
     const [hoverFix, setHoverFix] = useStore('hoverFix');
@@ -15,12 +20,14 @@ export default function(){
     const [xPos, setXPos] = useStore('xPos');
     const [yPos, setYPos] = useStore('yPos');
     const [data, setData] = useStore('data');
+
+    // Make the root node stand out
     // data.nodes[0]['symbolType'] = "diamond";
     // data.nodes[0]['color'] = "blue";
-    const [focusedNodeId, setFocusedNodeId] = useStore('focusedNodeId');
-    // console.log("DATA FROM STORE!",data);
-    // Without this nodes will stack on one another by default
 
+    const [focusedNodeId, setFocusedNodeId] = useStore('focusedNodeId');
+
+    // Alternative config for regression testing (use both after a change)
     let altConfig ={
       directed: true,
       automaticRearrangeAfterDropNode: true,
@@ -72,6 +79,8 @@ export default function(){
           type: "STRAIGHT",
       },
     }
+
+    // Primary config w/ the least bugs
     let config = {
       "automaticRearrangeAfterDropNode": false,
       "collapsible": false,
@@ -96,6 +105,8 @@ export default function(){
         "linkStrength": function(link){
           //console.log("in link strength!",link);
           return link.distance;
+          // We can have functions defining graph properties
+
           // let x = 1 / Math.min(count(link.source), count(link.target));
           // console.log(x);
           // return x;
@@ -141,6 +152,7 @@ export default function(){
       }
     }
 
+    // Make nodes spread out initially
     const decorateGraphNodesWithInitialPositioning = (nodes) => {
         //console.log("IN DECORATE");
         if(nodes != undefined){
@@ -166,7 +178,7 @@ export default function(){
       setHoverFix(false);
     }
 
-    // Single clicking zooms into a node
+    // Single clicking zooms into a node (unsafe)
     // const nodeClick = nodeId =>{
     //   if(focusedNodeId !== nodeId){
     //     focusNode(nodeId);
@@ -213,33 +225,40 @@ export default function(){
       }
     }
 
-    // component did mount
-    // useEffect(()=>{
-    //   //if(data.links != undefined){
-    //     setData({data:data},()=>{
-    //       setTimeout(function(){
-    //         focusNode(data.nodes[0].id)
-    //       }, 500);
-    //     });
-    //   //}
-    // },[]);
-    //
-    // componentDidUpdate
-    // useEffect(()=>{
-    //   // console.log(highlightedNode);
-    //   // setHighlightedNodeId(highlightedNode);
-    //   //console.log(data,"GRAPH CONTAINER DID UPDATE!");
-    //   if(typeof data.nodes !== 'undefined'){
-    //     let decoratedNodes = decorateGraphNodesWithInitialPositioning(data.nodes);
-    //     if(decoratedNodes != undefined || decoratedNodes != null){
-    //       setData(data,()=>{
-    //         setTimeout(function(){
-    //           focusNode(data.nodes[0].id)
-    //         }, 500);
-    //       })
-    //     }
-    //   }
-    // },[data.links]);
+    /*
+    'do this when we first render' example
+
+    useEffect(()=>{
+      //if(data.links != undefined){
+        setData({data:data},()=>{
+          setTimeout(function(){
+            focusNode(data.nodes[0].id)
+          }, 500);
+        });
+      //}
+    },[]);
+
+    'do this when we update' example
+
+    useEffect(()=>{
+      // console.log(highlightedNode);
+      // setHighlightedNodeId(highlightedNode);
+      //console.log(data,"GRAPH CONTAINER DID UPDATE!");
+      if(typeof data.nodes !== 'undefined'){
+        let decoratedNodes = decorateGraphNodesWithInitialPositioning(data.nodes);
+        if(decoratedNodes != undefined || decoratedNodes != null){
+          setData(data,()=>{
+            setTimeout(function(){
+              focusNode(data.nodes[0].id)
+            }, 500);
+          })
+        }
+      }
+    },[data.links]);
+
+    last argument is what to look for to signal an update
+
+    */
 
     const dummyData = {
       nodes: [{id:"dInitialNode1",color:"black",symbolType:"diamond"},
@@ -257,6 +276,7 @@ export default function(){
       onDoubleClickNode:onDoubleClickNode,
     }
 
+    // Do not remove memo usage,
     const memoizedGraph = useMemo(()=>{
       return(
       <div onMouseMove={_onMouseMove}>

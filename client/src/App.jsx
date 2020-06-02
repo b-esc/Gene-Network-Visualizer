@@ -2,19 +2,32 @@ import * as React from 'react';
 import { withStore } from 'react-context-hook';
 import { Segment } from 'semantic-ui-react';
 import Home from './Home.jsx';
+import Splash from './Splash.jsx';
 
+/**
+* App is seen first by our ReactDOM() in index.jsx
+* Serves to init react hooks
+*
+* React hooks just centralizes our this.state.
+* Tried Redux, too much complexity for smaller apps
+*/
 function App(){
     return(
         <div className="App">
             <Segment id='app-segment' vertical>
                 <div style={{ color: '#sebfcf7' }}>
-                    <Home/>
+                    <Splash/>
                 </div>
             </Segment>
         </div>
     )
 }
 
+/**
+* Initial global state
+* Many libraries require some filler / placeholder
+* data to render initially (as we update their props)
+*/
 const initialState = {
   // for GraphContainer
   focusedNodeId: "initialNode1",
@@ -24,13 +37,13 @@ const initialState = {
   maxRes: 10,
   searchType: "init searchType", //?
   isNhood: true,
-  // Modal appearing over network
+  // NodeHoverModal.jsx
   xPos: 0,
   yPos: 0,
   hoverVisible: false,
   hoverFix: false,
   hoverUID: 910,
-  // Network initial values
+  // Graph initial values
   data: {
     nodes: [{id:"initialNode1",color:"black",symbolType:"diamond"},
             {id:"initialNode2",color:"red",symbolType:"diamond"}],
@@ -44,15 +57,19 @@ const initialState = {
   // Main Table Params
   tableGenes: [],
   previewGenes: [],
+  // Current page on primary table
   curPage: 1,
   rowsPerPage: 8,
+  // Current page on preview / more info table
   curPreviewPage: 1,
   previewRowsPerPage:4,
   gnDrop: false,
   tiDrop: false,
 }
 
+// Add final configurations to our global store
 const storeConfig ={
+  // Below console.log's on each state change
   listener: (state) =>{
     //console.log('state changed!', state)
   }

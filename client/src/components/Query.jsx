@@ -22,11 +22,15 @@ const dropdown_opts = [
   }
 ]
 
-// "/api/queryGene/{uid}/{maxRes}/{isNhood}"
-
+/*
+* 'Search Bar' portion of the application
+* Controls global state based on user input to forms
+*/
 export default function (){
   const [queryText, setQueryText] = useStore('queryText')
   const [maxRes, setMaxRes] = useStore('maxRes')
+
+  // Dropdown for varying types of functionality
   const [searchType, setSearchType] = useStore('searchType')
   const [isNhood, toggleNhood] = useStore('isNhood')
   const [tableGenes, setTableGenes] = useStore('tableGenes')
@@ -104,6 +108,7 @@ export default function (){
                 links:x.links,
                 focusedNodeId:x.nodes[0].id
               });
+              // ALWAYS set the current page back to 1
               setCurPage(1);
             }}
             size="huge">

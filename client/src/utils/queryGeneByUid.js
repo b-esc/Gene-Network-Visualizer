@@ -3,14 +3,14 @@ import axios from "axios";
 
 let endpoint = "http://localhost:8080";
 
-// attempted abstraction
-function norm(a,b,min, max) {
-    var del = max - min;
-    return function (val) {
-        return a + (((val - min) * (b-a)) / del);
-    };
-}
-
+/**
+* Requests gene and link information to populate table & graph.
+* Uses UID, which isn't too relevant to users making this primarily
+* a debugging tool.
+* @param {String/Number} uid unique id of gene to preview
+* @returns {Array[Gene]} previewGenes list of Gene + info
+*  to create a preview of a full query
+*/
 export default async function queryGeneByUid(queryText,maxRes,isNhood){
     return axios.get(endpoint + '/api/queryGene/'
     + `${queryText}/${maxRes}/${isNhood}`).then(res =>{

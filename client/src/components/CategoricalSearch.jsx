@@ -27,25 +27,15 @@ const source = _.range(0, 3).reduce((memo) => {
   return memo
 }, {})
 
-// function buildSource(dataArr){
-//   var x = {
-//     desc: {
-//       name: "description",
-//       results:[],
-//     },
-//     term_ids:{
-//       name: "term_ids",
-//       results:[],
-//     }
-//   }
-// }
-
+/**
+* CategoricalSearch is restricted by SemanticUI-React
+* If functionality to get / display search data from
+* other sites is added, test without the component / just text
+* first as Class components are a good way to lose time
+*/
 class CategoricalSearch extends Component {
-  // this.props.genes.reduce((gene)=>{
-  //   console.log("reducing, cur gene:",gene);
-  //   return gene;
-  // },{})
-  //console.log(props.genes,"SHOULD BE GENES!")
+
+  // Maps client data to SemanticUI's expected
   arrayToSource = (arr, descKey) =>{
     let x = arr.map(function(item){
       return{
@@ -56,11 +46,11 @@ class CategoricalSearch extends Component {
     })
     return x
   }
-  //state = initialState
+
+
   constructor(props){
     console.log(props);
 
-    //console.log(newSource)
     super(props);
     var newSource = {
       description: {

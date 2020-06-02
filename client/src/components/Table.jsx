@@ -9,7 +9,15 @@ let atk_set = new Set(allowed_table_keys);
 let table_headers = ['Species', 'Display Name',"Gene Names",'Description', 'Term IDs','Additional Info']
 
 
-
+/*
+* Generator for all tables in our application
+* We anticipate at most two tables at once
+*
+* One from our primary query, one from a 'More Info' request
+* They have different current / max / isVisible values in our global store
+*
+* isPreview determines if 'More Info' should be offered to the user
+*/
 export default function({data, rowsPerPage, isPreview}) {
   const [gCurPage, gSetCurPage] = useStore('curPage');
   const [curPreviewPage, setCurPreviewPage] = useStore('curPreviewPage');
@@ -17,14 +25,14 @@ export default function({data, rowsPerPage, isPreview}) {
 
   const [previewGenes, setPreviewGenes] = useStore('previewGenes');
   const [moreInfoVisible, setMoreInfoVisible] = useStore('moreInfoVisible');
-  // if(props.isPreview){
-  //   console.log("CUR PREVIEW GENES!",curGenes,previewGenes,tableGenes);
-  // }
+
+// Track table rows to render
   let curPage = (isPreview) ? curPreviewPage : gCurPage;
   let lastIdx = rowsPerPage * curPage;
   let firstIdx = lastIdx - rowsPerPage;
   let curGenes = (data.length > 0) ? data.slice(firstIdx,lastIdx) : [];
 
+// Finite handling of different column titles
   let render_page = curGenes.map(gene =>
     <Table.Row>
       {
