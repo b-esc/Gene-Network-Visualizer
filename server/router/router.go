@@ -10,6 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// catches urls, assigns functions in middleware to handle response
 func Router() *mux.Router {
 	router := mux.NewRouter()
 	// {uid}, {maxRes} .. etc are all variables passed via ajax url call

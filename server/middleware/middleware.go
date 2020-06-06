@@ -26,7 +26,7 @@ import (
 var store *Bitcask
 var storeErr error
 
-// connect to bitcask
+// connect to bitcask, key value local storage
 func init() {
 	fp, _ := filepath.Abs("database/store")
 	// adjust WithMaxValueSize up as needed,

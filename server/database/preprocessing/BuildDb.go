@@ -1,10 +1,9 @@
 // ben.escobar.ben@gmail.com
 
-// builds a Bitcask database from two valid info/edge csv files
 // Usage: go run ./BuildDb.go info.csv edges.csv [-d]
 // [-d as third arg clears current db]
 
-package main
+package preprocessing
 
 import (
 	"encoding/json"
@@ -22,6 +21,7 @@ import (
 	"github.com/ibbd-dev/go-csv"
 )
 
+// Builds a bitcask database mapping UID to Gene information
 func main() {
 	start := time.Now()
 

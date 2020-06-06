@@ -10,4 +10,5 @@ require (
 	github.com/mattn/go-colorable v0.1.6 // indirect
 	github.com/prologic/bitcask v0.3.5
 	go.mongodb.org/mongo-driver v1.3.1 // indirect
+	golang.org/x/tools v0.0.0-20200606014950-c42cb6316fb6 // indirect
 )
