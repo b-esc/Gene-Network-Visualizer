@@ -7,15 +7,24 @@ import { Transition, Grid, Header, Button } from 'semantic-ui-react';
 
 let endpoint = "http://localhost:8080";
 
-/*
+/**
 * Modal that follows our cursor
 * when we hover over a node on visualizer
+*
+* Able to invoke new Queries and Previews
+* New (non preview) Queries use settings from whatever is in Query.js (isNhood, maxRes)
+*
 * Visibility triggered by hoverVisible (handled in GraphContainer)
 *
-* Usage of async function (){ ... } is to use await
-* avoiding conflicts with functions not running in order
+* Is able to assign previewGenes and make MoreInfoModal visible
+* @param {boolean} hoverVisible (FROM STORE) Is this modal currently visible (deactived by clicking visualizer canvas)
+* @param {boolean} hoverFix (FROM STORE) Should this modal be visible even when I mouse off the node (activated by double click)
+* @param {Number} xPos (FROM STORE) used to follow cursor
+* @param {Number} yPos (FROM STORE) used to follow cursor
+* @param {Number} curPage (FROM STORE) essential to set back to 1 after every new (non preview) query
+* @returns {Object} Modal following cursor allowing graph interactivity with application functionality
 */
-export default function () {
+function NodeHoverModal() {
 // Relevant to this component
   const [hoverVisible, setHoverVisible] = useStore('hoverVisible')
 // Double clicking a node fixes it to the screen
@@ -103,3 +112,4 @@ export default function () {
     </Transition.Group>
   )
 }
+export default NodeHoverModal

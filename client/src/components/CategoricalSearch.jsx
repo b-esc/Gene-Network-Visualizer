@@ -28,7 +28,9 @@ const source = _.range(0, 3).reduce((memo) => {
 }, {})
 
 /**
-* CategoricalSearch is restricted by SemanticUI-React
+* CategoricalSearch
+*
+* Functionality restricted by SemanticUI-React
 * If functionality to get / display search data from
 * other sites is added, test without the component / just text
 * first as Class components are a good way to lose time

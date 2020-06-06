@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Table.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Table.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import axios from "axios";
+import previewGene from '../utils/previewGene';
+import { useStore } from 'react-context-hook';
+import { Table, Menu, Button, Icon } from 'semantic-ui-react';
+
+let allowed_table_keys = ["species","gene_display_name","gene_names","description","term_ids"];
+let atk_set = new Set(allowed_table_keys);
+let table_headers = ['Species', 'Display Name',"Gene Names",'Description', 'Term IDs','Additional Info']
+
+
+/**
+* Generator for all tables in our application
+* We anticipate at most two tables at once
+*
+* One from our primary query, one from a 'More Info' request
+* They have different current / max / isVisible values in our global store
+*
+* gCurPage is for isPreview = false, curPreviewPage is for isPreview = True
+*
+* @param {Array} data array of Gene's to generate table rows from
+* @param {Number} rowsPerPage controls how much information the table can show at once
+* @param {boolean} isPreview determines if 'more info' (which invokes a preview server call) should be rendered for each table row
+* @returns {Object} resultant table paginated
+*/
+function TableSrc({data, rowsPerPage, isPreview}) {
+  const [gCurPage, gSetCurPage] = useStore('curPage');
+  const [curPreviewPage, setCurPreviewPage] = useStore('curPreviewPage');
+  const [moreInfoGene, setMoreInfoGene] = useStore('moreInfoGene');
+
+  const [previewGenes, setPreviewGenes] = useStore('previewGenes');
+  const [moreInfoVisible, setMoreInfoVisible] = useStore('moreInfoVisible');
+
+// Track table rows to render
+  let curPage = (isPreview) ? curPreviewPage : gCurPage;
+  let lastIdx = rowsPerPage * curPage;
+  let firstIdx = lastIdx - rowsPerPage;
+  let curGenes = (data.length > 0) ? data.slice(firstIdx,lastIdx) : [];
+
+// Checks what data is getting a table cell
+// Some conditionals to handle rendering (bad move to backend)
+  let render_page = curGenes.map(gene =>
+    &lt;Table.Row>
+      {
+        allowed_table_keys.map(key =>{
+          if(key == "description"){
+            const strToArr = gene[key].split(";");
+            const arrayToTable = strToArr.map((d) => &lt;li style={{"list-style": "none"}}>{d}&lt;/li>);
+            return(&lt;Table.Cell>
+              {arrayToTable}
+            &lt;/Table.Cell>)
+          }
+          else if(atk_set.has(key) &amp;&amp; !(Array.isArray(gene[key]) &amp;&amp; (gene[key].length > 1)) ){
+            return(&lt;Table.Cell>
+              {gene[key]}
+            &lt;/Table.Cell>)
+          }
+          else if(Array.isArray(gene[key]) &amp;&amp; (gene[key].length > 1)){
+            const arrayToTable = gene[key].map((d) => &lt;li style={{"list-style": "none"}}>{d}&lt;/li>);
+            return(&lt;Table.Cell>
+              {arrayToTable}
+            &lt;/Table.Cell>)
+
+          }
+        })
+      }
+      {!isPreview &amp;&amp;
+      &lt;Table.Cell>
+        &lt;Button animated onClick={
+            async function(){
+              // reducer toggles infoModal visible
+              let x = await previewGene(gene.uid);
+              if(x.length > 0) setMoreInfoGene(x[0]);
+              //console.log(x[0])
+              setPreviewGenes(x);
+              setCurPreviewPage(1);
+              setMoreInfoVisible(true);
+            }}>
+          &lt;Button.Content visible>More Info&lt;/Button.Content>
+          &lt;Button.Content hidden>
+            &lt;Icon name='arrow right' />
+          &lt;/Button.Content>
+        &lt;/Button>
+      &lt;/Table.Cell>
+      }
+    &lt;/Table.Row>
+  );
+
+  let page_numbers = []
+  for(let i = 1; i &lt;= Math.ceil(data.length / rowsPerPage); i++){
+    page_numbers.push(i);
+  }
+
+  let render_numbers = page_numbers.map(number =>{
+    return(
+      &lt;Menu.Item as='a'
+        key={number}
+        id={number}
+        onClick={(event) => {
+          if(isPreview){
+            setCurPreviewPage(event.target.id);
+          }else{
+            gSetCurPage(event.target.id);
+          }
+        }}>
+        {number}
+      &lt;/Menu.Item>
+    )
+  });
+
+// no additional info column title unless its not a preview
+  let render_titles = table_headers.map(title =>{
+    if(!(isPreview &amp;&amp; title == 'Additional Info')){
+      return(&lt;Table.HeaderCell key={title}>{title}&lt;/Table.HeaderCell>)
+    }
+  });
+
+  return(
+    &lt;Table textAlign='center' celled striped fixed>
+      &lt;Table.Header>
+        {render_titles}
+      &lt;/Table.Header>
+
+      &lt;Table.Body>
+        {render_page}
+      &lt;/Table.Body>
+
+      &lt;Table.Footer>
+        &lt;Table.Row>
+          &lt;Table.HeaderCell colSpan = {!isPreview ? '6' : '5'}>
+            &lt;Menu floated='right' pagination id="page-numbers">
+              {render_numbers}
+            &lt;/Menu>
+          &lt;/Table.HeaderCell>
+        &lt;/Table.Row>
+      &lt;/Table.Footer>
+    &lt;/Table>
+  )
+}
+
+export default TableSrc;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#MoreInfoModal">MoreInfoModal</a></li><li><a href="global.html#NodeHoverModal">NodeHoverModal</a></li><li><a href="global.html#previewGene">previewGene</a></li><li><a href="global.html#Query">Query</a></li><li><a href="global.html#queryGeneByUid">queryGeneByUid</a></li><li><a href="global.html#Splash">Splash</a></li><li><a href="global.html#TableSrc">TableSrc</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Jun 06 2020 16:49:22 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

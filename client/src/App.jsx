@@ -10,6 +10,9 @@ import Splash from './Splash.jsx';
 *
 * React hooks just centralizes our this.state.
 * Tried Redux, too much complexity for smaller apps
+*
+* Look for FROM STORE in below methods. Indicates data retreived from global store.
+* Instead of a traditional argument input.
 */
 function App(){
     return(

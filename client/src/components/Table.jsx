@@ -9,16 +9,21 @@ let atk_set = new Set(allowed_table_keys);
 let table_headers = ['Species', 'Display Name',"Gene Names",'Description', 'Term IDs','Additional Info']
 
 
-/*
+/**
 * Generator for all tables in our application
 * We anticipate at most two tables at once
 *
 * One from our primary query, one from a 'More Info' request
 * They have different current / max / isVisible values in our global store
 *
-* isPreview determines if 'More Info' should be offered to the user
+* gCurPage is for isPreview = false, curPreviewPage is for isPreview = True
+*
+* @param {Array} data array of Gene's to generate table rows from
+* @param {Number} rowsPerPage controls how much information the table can show at once
+* @param {boolean} isPreview determines if 'more info' (which invokes a preview server call) should be rendered for each table row
+* @returns {Object} resultant table paginated
 */
-export default function({data, rowsPerPage, isPreview}) {
+function TableSrc({data, rowsPerPage, isPreview}) {
   const [gCurPage, gSetCurPage] = useStore('curPage');
   const [curPreviewPage, setCurPreviewPage] = useStore('curPreviewPage');
   const [moreInfoGene, setMoreInfoGene] = useStore('moreInfoGene');
@@ -132,3 +137,5 @@ export default function({data, rowsPerPage, isPreview}) {
     </Table>
   )
 }
+
+export default TableSrc;

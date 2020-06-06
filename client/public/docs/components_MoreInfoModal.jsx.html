@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/MoreInfoModal.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/MoreInfoModal.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import axios from "axios";
+import CategoricalSearch from './CategoricalSearch';
+import {CSVLink} from "react-csv";
+import { useStore } from 'react-context-hook';
+import { Modal, Header, Button, List, Accordion, Icon, Grid } from 'semantic-ui-react';
+import Table from './Table.jsx'
+
+let endpoint = "http://localhost:8080";
+
+/**
+* MoreInfo Modal, providing formatted details
+* on a single database entry.
+*
+* We can get here via the main table or
+* clicking a node => more info on the graph
+*
+* @param {Object} moreInfoGene (FROM STORE) Targetted Gene to detail with modal
+* @param {Array} previewGenes (FROM STORE) Genes to show in preview table inside of modal
+* @param {boolean} gnDrop (FROM STORE) dropdown for multiple gene_names property
+* @param {boolean} tiDrop (FROM STORE) dropdown for term_ids property
+* @returns {Object} Modal detailing information about a single Gene
+*/
+function MoreInfoModal() {
+  // MoreInfoGene is the selected gene of interest
+  const [moreInfoGene] = useStore('moreInfoGene');
+  const [moreInfoVisible, setMoreInfoVisible] = useStore('moreInfoVisible');
+  const [previewGenes] = useStore('previewGenes');
+  const [previewRowsPerPage] = useStore('previewRowsPerPage');
+  const [gnDrop, setGnDrop] = useStore('gnDrop');
+  const [tiDrop, setTiDrop] = useStore('tiDrop');
+
+// There's usually many Gene names
+  let geneNames = moreInfoGene.gene_names.map(name =>{
+    return(
+      &lt;List.Item>
+        &lt;List.Content>
+          &lt;List.Header>
+            {name}
+          &lt;/List.Header>
+        &lt;/List.Content>
+      &lt;/List.Item>
+    )
+  })
+
+// Same with GoTerms
+  let goTerms = moreInfoGene.term_ids.map(term_id =>{
+    return(
+      &lt;List.Item>
+        &lt;List.Content>
+          &lt;List.Header>
+            {term_id}
+          &lt;/List.Header>
+        &lt;/List.Content>
+      &lt;/List.Item>
+    )
+  })
+
+// If we have a gene of interest and this modal is supposed to be visible..
+// Render (conditional rendering)
+  return ( (moreInfoGene != null &amp;&amp; moreInfoVisible) &amp;&amp;
+  &lt;Modal dimmer={'blurring'} open={moreInfoVisible}>
+    {{moreInfoVisible} &amp;&amp;
+      &lt;Modal.Content>
+
+        {/* &lt;Image wrapped size='medium' src='https://i.imgur.com/jXy3wuV.png' /> */}
+        &lt;Modal.Description>
+
+          &lt;Header>
+            &lt;h1>
+              {moreInfoGene.gene_display_name}
+            &lt;/h1>
+          &lt;/Header>
+          &lt;h1>Description:&lt;/h1>
+          &lt;h3 style={{color:"gray"}}>{moreInfoGene.description}&lt;/h3>
+
+          &lt;h1>Species:{moreInfoGene.species}&lt;/h1>
+
+          &lt;Accordion exclusive={false}>
+            &lt;Accordion.Title active={gnDrop===true} onClick={()=>setGnDrop(!gnDrop)}>
+              &lt;h1>Gene Names &lt;Icon name='dropdown'/>&lt;/h1>
+
+            &lt;/Accordion.Title>
+            &lt;Accordion.Content active={gnDrop===true}>
+              &lt;List divided relaxed>
+                {geneNames}
+              &lt;/List>
+            &lt;/Accordion.Content>
+
+            &lt;Accordion.Title active={tiDrop===true} onClick={()=>setTiDrop(!tiDrop)}>
+              &lt;h1>Term ids &lt;Icon name='dropdown'/>&lt;/h1>
+
+            &lt;/Accordion.Title>
+            &lt;Accordion.Content active={tiDrop===true}>
+              &lt;List divided relaxed>
+                {goTerms}
+              &lt;/List>
+            &lt;/Accordion.Content>
+
+          &lt;/Accordion>
+
+          &lt;Grid centered divided columns={2}>
+            &lt;Grid.Column textAlign='center'>
+              &lt;h3>Download Table&lt;/h3>
+              &lt;CSVLink data={previewGenes}>
+                &lt;Button icon  labelPosition='left'>
+                  &lt;Icon name='download'/>
+
+                  Export
+                &lt;/Button>
+              &lt;/CSVLink>
+            &lt;/Grid.Column>
+            &lt;Grid.Column textAlign='center'>
+              &lt;h3>Search Fields&lt;/h3>
+              &lt;CategoricalSearch genes={previewGenes}/>
+            &lt;/Grid.Column>
+          &lt;/Grid>
+
+          &lt;h1>Search Preview
+
+          &lt;/h1>
+
+
+            &lt;Table data={previewGenes}
+              rowsPerPage={previewRowsPerPage}
+              isPreview={true}/>
+
+        &lt;/Modal.Description>
+        {/* Many functions are inlined / interweaved as so */}
+        &lt;Button onClick={() => setMoreInfoVisible(!moreInfoVisible)}>Close&lt;/Button>
+      &lt;/Modal.Content>
+    }
+  &lt;/Modal>)
+}
+
+export default MoreInfoModal;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#MoreInfoModal">MoreInfoModal</a></li><li><a href="global.html#NodeHoverModal">NodeHoverModal</a></li><li><a href="global.html#previewGene">previewGene</a></li><li><a href="global.html#Query">Query</a></li><li><a href="global.html#queryGeneByUid">queryGeneByUid</a></li><li><a href="global.html#Splash">Splash</a></li><li><a href="global.html#TableSrc">TableSrc</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Jun 06 2020 16:49:22 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

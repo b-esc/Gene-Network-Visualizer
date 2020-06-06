@@ -9,13 +9,12 @@ import Table from "./components/Table";
 
 
 /**
+* Splash
+*
 * Splash Page w/Context, FAQ, ToDos, etc
 * Best place to add user auth entry if later added
 */
-export default function (){
-  const [tableGenes] = useStore('tableGenes');
-  const [rowsPerPage] = useStore('rowsPerPage');
-
+function Splash(){
   return (
     <Responsive>
       <Segment
@@ -24,12 +23,18 @@ export default function (){
         vertical
       >
         <Container>
-          <Menu size='large'>
-            <Menu.Item>
-              <a target="_blank" href="https://dill-picl.org/">lab site</a>
+          <Menu size='huge'>
+            <Menu.Item as='a' href="https://dill-picl.org/">
+              lab site
             </Menu.Item>
-            <Menu.Item as='a'>
-              documentation
+            <Menu.Item as='a' href="/docs/global.html" target='_blank'>
+                documentation.js
+            </Menu.Item>
+            <Menu.Item as='a' href="/docs/global.html" target='_blank'>
+                documentation.go
+            </Menu.Item>
+            <Menu.Item as='a' href="/docs/global.html" target='_blank'>
+                readme
             </Menu.Item>
           </Menu>
         </Container>
@@ -335,3 +340,5 @@ export default function (){
     </Responsive>
   )
 }
+
+export default Splash;

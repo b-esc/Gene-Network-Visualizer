@@ -11,9 +11,8 @@ import Table from "./components/Table";
 * Container for visualizer + table view
 * Defines formatting for our application view
 * Details on SemanticUI-React's documentation
-* @see App.jsx Home's parent
 */
-export default function (){
+function Home(){
   const [tableGenes] = useStore('tableGenes');
   const [rowsPerPage] = useStore('rowsPerPage');
 
@@ -56,3 +55,5 @@ export default function (){
       </Segment>
   )
 }
+
+export default Home

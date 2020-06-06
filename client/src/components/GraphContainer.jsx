@@ -10,8 +10,14 @@ import { Graph, Link, d3 } from "react-d3-graph";
 *
 * Probably leave everything below alone or
 * ensure regression is tested before after every change
+*
+* @param {Object} moreInfoGene (FROM STORE) Targetted Gene to detail with modal
+* @param {Array} previewGenes (FROM STORE) Genes to show in preview table inside of modal
+* @param {boolean} gnDrop (FROM STORE) dropdown for multiple gene_names property
+* @param {boolean} tiDrop (FROM STORE) dropdown for term_ids property
+* @returns {Object} Modal detailing information about a single Gene
 */
-export default function(){
+function GraphContainer(){
     const isCancelled = useRef;
     const [tableGenes] = useStore('tableGenes');
     const [hoverVisible, setHoverVisible] = useStore('hoverVisible');
@@ -293,3 +299,5 @@ export default function(){
     )
 }
 //          ref = "graph"
+
+export default GraphContainer;

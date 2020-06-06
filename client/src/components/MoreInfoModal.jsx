@@ -8,14 +8,20 @@ import Table from './Table.jsx'
 
 let endpoint = "http://localhost:8080";
 
-/*
+/**
 * MoreInfo Modal, providing formatted details
 * on a single database entry.
 *
 * We can get here via the main table or
 * clicking a node => more info on the graph
+*
+* @param {Object} moreInfoGene (FROM STORE) Targetted Gene to detail with modal
+* @param {Array} previewGenes (FROM STORE) Genes to show in preview table inside of modal
+* @param {boolean} gnDrop (FROM STORE) dropdown for multiple gene_names property
+* @param {boolean} tiDrop (FROM STORE) dropdown for term_ids property
+* @returns {Object} Modal detailing information about a single Gene
 */
-export default function () {
+function MoreInfoModal() {
   // MoreInfoGene is the selected gene of interest
   const [moreInfoGene] = useStore('moreInfoGene');
   const [moreInfoVisible, setMoreInfoVisible] = useStore('moreInfoVisible');
@@ -126,3 +132,5 @@ export default function () {
     }
   </Modal>)
 }
+
+export default MoreInfoModal;

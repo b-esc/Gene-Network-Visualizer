@@ -12,6 +12,7 @@
     "faker": "^4.1.0",
     "jsdoc": "^3.6.4",
     "lodash": "^4.17.15",
+    "parcel-bundler": "^1.12.4",
     "react": "^16.13.1",
     "react-context-hook": "^1.2.1",
     "react-csv": "^2.0.3",
@@ -22,7 +23,7 @@
     "semantic-ui-react": "^0.88.2"
   },
   "scripts": {
-    "docs": "jsdoc -c jsdoc.conf.json",
+    "docs": "jsdoc -c ./jsdoc.json",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
