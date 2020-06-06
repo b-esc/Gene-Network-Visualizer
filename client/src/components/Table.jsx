@@ -32,7 +32,8 @@ export default function({data, rowsPerPage, isPreview}) {
   let firstIdx = lastIdx - rowsPerPage;
   let curGenes = (data.length > 0) ? data.slice(firstIdx,lastIdx) : [];
 
-// Finite handling of different column titles
+// Checks what data is getting a table cell
+// Some conditionals to handle rendering (bad move to backend)
   let render_page = curGenes.map(gene =>
     <Table.Row>
       {
@@ -102,6 +103,7 @@ export default function({data, rowsPerPage, isPreview}) {
     )
   });
 
+// no additional info column title unless its not a preview
   let render_titles = table_headers.map(title =>{
     if(!(isPreview && title == 'Additional Info')){
       return(<Table.HeaderCell key={title}>{title}</Table.HeaderCell>)
