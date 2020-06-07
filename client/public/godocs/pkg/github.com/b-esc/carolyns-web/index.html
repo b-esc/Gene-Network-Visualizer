@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#375EAB">
 
-  <title>/src/github.com/b-esc/carolyns-web - Go Documentation Server</title>
+  <title>b-esc gene-network-visualizer go documentation</title>
 
 <link type="text/css" rel="stylesheet" href="../../../../lib/godoc/style.css">
 
@@ -43,7 +43,7 @@
 
 
   <h1>
-    Directory /src/github.com/b-esc/carolyns-web
+    Directory of b-esc gene-network-visualizer
     <span class="text-muted"></span>
   </h1>
 
@@ -72,8 +72,8 @@
 
 
 
-	
-	
+
+
 	<div class="pkg-dir">
 		<table>
 			<tr>
@@ -81,79 +81,82 @@
 				<th class="pkg-synopsis">Synopsis</th>
 			</tr>
 
-			
+
 			<tr>
 				<td colspan="2"><a href="http://localhost:6060/pkg/github.com/b-esc/">..</a></td>
 			</tr>
-			
 
-			
+
+
 				<tr>
-				
+
 					<td class="pkg-name" style="padding-left: 0px;">
 						<a href="server/index.html?m=all">server</a>
 					</td>
-				
+
 					<td class="pkg-synopsis">
-						
+            endpoint handling, globally used types, middleware
 					</td>
 				</tr>
-			
+
 				<tr>
-				
+
 					<td class="pkg-name" style="padding-left: 20px;">
 						<a href="server/database/index.html?m=all">database</a>
 					</td>
-				
+
 					<td class="pkg-synopsis">
-						
+            storage for bitcask
 					</td>
 				</tr>
-			
+
 				<tr>
-				
+
 					<td class="pkg-name" style="padding-left: 40px;">
 						<a href="server/database/preprocessing/index.html?m=all">preprocessing</a>
 					</td>
-				
+
 					<td class="pkg-synopsis">
-						
+            tools to generate a database for the application
 					</td>
 				</tr>
-			
+
 				<tr>
-				
+
 					<td class="pkg-name" style="padding-left: 20px;">
 						<a href="server/middleware/index.html?m=all">middleware</a>
 					</td>
-				
+
 					<td class="pkg-synopsis">
-						
+            handling of server requests sent by client
+            most often ends in an array of aggregated data being returned
 					</td>
 				</tr>
-			
+
 				<tr>
-				
+
 					<td class="pkg-name" style="padding-left: 20px;">
 						<a href="server/models/index.html?m=all">models</a>
 					</td>
-				
+
 					<td class="pkg-synopsis">
-						
+            defines types and structures universally shared throughout the application
+            <br></br>
+            ambiguous types in client are defined in json here
 					</td>
 				</tr>
-			
+
 				<tr>
-				
+
 					<td class="pkg-name" style="padding-left: 20px;">
 						<a href="server/router/index.html?m=all">router</a>
 					</td>
-				
+
 					<td class="pkg-synopsis">
 						listens on urls for client requests assigns middleware function to handle variable url requests see client/src/utils/*.js to see how these are called
 					</td>
 				</tr>
-			
+
 		</table>
 	</div>
 

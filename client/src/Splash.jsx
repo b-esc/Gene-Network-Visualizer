@@ -30,7 +30,7 @@ function Splash(){
             <Menu.Item as='a' href="/docs/global.html" target='_blank'>
                 documentation.js
             </Menu.Item>
-            <Menu.Item as='a' href="/docs/global.html" target='_blank'>
+            <Menu.Item as='a' href="/godocs/pkg/github.com/b-esc/carolyns-web/index.html" target='_blank'>
                 documentation.go
             </Menu.Item>
             <Menu.Item as='a' href="/docs/global.html" target='_blank'>
