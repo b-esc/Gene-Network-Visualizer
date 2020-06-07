@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>models - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../../../../../../lib/godoc/style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../../../../../../lib/godoc/jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.14";</script>
+<script src="../../../../../../lib/godoc/godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="http://localhost:6060/pkg/">Go Documentation Server</a></div>
+<div class="top-heading" id="heading-narrow"><a href="http://localhost:6060/pkg/">GoDoc</a></div>
+<a href="index.html?m=all#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+<form method="GET" action="http://localhost:6060/search">
+<div id="menu">
+
+<span class="search-box"><input type="search" id="search" name="q" placeholder="Search" aria-label="Search" required><button type="submit"><span><!-- magnifying glass: --><svg width="24" height="24" viewBox="0 0 24 24"><title>submit search</title><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M0 0h24v24H0z" fill="none"/></svg></span></button></span>
+</div>
+</form>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package models
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/b-esc/carolyns-web/server/models"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html?m=all#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html?m=all#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+			
+				
+				<dd><a href="index.html?m=all#EdgesPair">type EdgesPair</a></dd>
+				
+				
+			
+				
+				<dd><a href="index.html?m=all#Gene">type Gene</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html?m=all#LineToGene">func LineToGene(line map[string]string, parsedEdges map[string]EdgesPair) *Gene</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html?m=all#NewGene">func NewGene(u, s, d, gdn, c, ti, gn string, parsedEdges map[string]EdgesPair) *Gene</a></dd>
+				
+				
+			
+				
+				<dd><a href="index.html?m=all#Link">type Link</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html?m=all#LineToLink">func LineToLink(line map[string]string) *Link</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html?m=all#NewLink">func NewLink(source, target string, distance float64) *Link</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html?m=all#Link.ToString">func (l Link) ToString() string</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h3>Package files</h3>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/models/models.go">models.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+		
+			
+			
+			<h2 id="EdgesPair">type <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/models/models.go?s=1219:1332#L38">EdgesPair</a>
+				<a class="permalink" href="index.html?m=all#EdgesPair">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+In the event of direct graphs, EdgesPair is used during processing
+</p>
+
+			<pre>type EdgesPair struct {
+    <span class="comment">// key is source</span>
+<span id="EdgesPair.Incoming"></span>    Incoming map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]<a href="index.html?m=all#Link">Link</a>
+    <span class="comment">// key is target</span>
+<span id="EdgesPair.Outgoing"></span>    Outgoing map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]<a href="index.html?m=all#Link">Link</a>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Gene">type <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/models/models.go?s=1409:1948#L46">Gene</a>
+				<a class="permalink" href="index.html?m=all#Gene">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+Gene contains all information needed to render table rows / graph nodes
+</p>
+
+			<pre>type Gene struct {
+    <span class="comment">// reactd3graph mappings</span>
+    <span class="comment">// id == uid, label == display name</span>
+<span id="Gene.Id"></span>    Id    <a href="http://localhost:6060/pkg/builtin/#string">string</a> `json:&#34;id&#34;`
+<span id="Gene.Label"></span>    Label <a href="http://localhost:6060/pkg/builtin/#string">string</a> `json:&#34;label&#34;`
+    <span class="comment">// core information</span>
+<span id="Gene.Uid"></span>    Uid               <a href="http://localhost:6060/pkg/builtin/#string">string</a>    `json:&#34;uid&#34;`
+<span id="Gene.Species"></span>    Species           <a href="http://localhost:6060/pkg/builtin/#string">string</a>    `json:&#34;species&#34;`
+<span id="Gene.Description"></span>    Description       <a href="http://localhost:6060/pkg/builtin/#string">string</a>    `json:&#34;description&#34;`
+<span id="Gene.Gene_display_name"></span>    Gene_display_name <a href="http://localhost:6060/pkg/builtin/#string">string</a>    `json:&#34;gene_display_name&#34;`
+<span id="Gene.Color"></span>    Color             <a href="http://localhost:6060/pkg/builtin/#string">string</a>    `json:&#34;color&#34;`
+<span id="Gene.Term_ids"></span>    Term_ids          []<a href="http://localhost:6060/pkg/builtin/#string">string</a>  `json:&#34;term_ids&#34;`
+<span id="Gene.Gene_names"></span>    Gene_names        []<a href="http://localhost:6060/pkg/builtin/#string">string</a>  `json:&#34;gene_names&#34;`
+<span id="Gene.Edges"></span>    Edges             <a href="index.html?m=all#EdgesPair">EdgesPair</a> `json:&#34;edges&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="LineToGene">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/models/models.go?s=2384:2463#L72">LineToGene</a>
+					<a class="permalink" href="index.html?m=all#LineToGene">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func LineToGene(line map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]<a href="http://localhost:6060/pkg/builtin/#string">string</a>, parsedEdges map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]<a href="index.html?m=all#EdgesPair">EdgesPair</a>) *<a href="index.html?m=all#Gene">Gene</a></pre>
+				<p>
+Handles construction of a Gene from parsedEdges and textual csv data
+</p>
+
+				
+				
+			
+				
+				<h3 id="NewGene">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/models/models.go?s=2008:2092#L63">NewGene</a>
+					<a class="permalink" href="index.html?m=all#NewGene">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func NewGene(u, s, d, gdn, c, ti, gn <a href="http://localhost:6060/pkg/builtin/#string">string</a>, parsedEdges map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]<a href="index.html?m=all#EdgesPair">EdgesPair</a>) *<a href="index.html?m=all#Gene">Gene</a></pre>
+				<p>
+NewGene constructs a Gene strcut from textual csv data
+</p>
+
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="Link">type <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/models/models.go?s=252:488#L6">Link</a>
+				<a class="permalink" href="index.html?m=all#Link">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+Link contains all information needed to render an edge
+</p>
+
+			<pre>type Link struct {
+<span id="Link.Source"></span>    Source         <a href="http://localhost:6060/pkg/builtin/#string">string</a>  `json:&#34;source&#34;`
+<span id="Link.Target"></span>    Target         <a href="http://localhost:6060/pkg/builtin/#string">string</a>  `json:&#34;target&#34;`
+<span id="Link.Distance"></span>    Distance       <a href="http://localhost:6060/pkg/builtin/#float64">float64</a> `json:&#34;distance&#34;`
+<span id="Link.StrokeWidth"></span>    StrokeWidth    <a href="http://localhost:6060/pkg/builtin/#float64">float64</a> `json:&#34;strokeWidth&#34;`
+<span id="Link.HighlightColor"></span>    HighlightColor <a href="http://localhost:6060/pkg/builtin/#string">string</a>  `json:&#34;highlightColor&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="LineToLink">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/models/models.go?s=931:976#L27">LineToLink</a>
+					<a class="permalink" href="index.html?m=all#LineToLink">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func LineToLink(line map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]<a href="http://localhost:6060/pkg/builtin/#string">string</a>) *<a href="index.html?m=all#Link">Link</a></pre>
+				<p>
+Converts a map textually representing a link to Link struct
+</p>
+
+				
+				
+			
+				
+				<h3 id="NewLink">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/models/models.go?s=570:629#L15">NewLink</a>
+					<a class="permalink" href="index.html?m=all#NewLink">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func NewLink(source, target <a href="http://localhost:6060/pkg/builtin/#string">string</a>, distance <a href="http://localhost:6060/pkg/builtin/#float64">float64</a>) *<a href="index.html?m=all#Link">Link</a></pre>
+				<p>
+NewLink constructs a Link given source/target UIDs, and a numerical distance
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="Link.ToString">func (Link) <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/models/models.go?s=785:816#L21">ToString</a>
+					<a class="permalink" href="index.html?m=all#Link.ToString">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (l <a href="index.html?m=all#Link">Link</a>) ToString() <a href="http://localhost:6060/pkg/builtin/#string">string</a></pre>
+				<p>
+converts a link to a representation &#34;source,target&#34;
+</p>
+
+				
+				
+				
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.14.<br>
+Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="http://localhost:6060/LICENSE">BSD license</a>.<br>
+<a href="http://localhost:6060/doc/tos.html">Terms of Service</a> |
+<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>middleware - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../../../../../../lib/godoc/style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../../../../../../lib/godoc/jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.14";</script>
+<script src="../../../../../../lib/godoc/godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="http://localhost:6060/pkg/">Go Documentation Server</a></div>
+<div class="top-heading" id="heading-narrow"><a href="http://localhost:6060/pkg/">GoDoc</a></div>
+<a href="index.html?m=all#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+<form method="GET" action="http://localhost:6060/search">
+<div id="menu">
+
+<span class="search-box"><input type="search" id="search" name="q" placeholder="Search" aria-label="Search" required><button type="submit"><span><!-- magnifying glass: --><svg width="24" height="24" viewBox="0 0 24 24"><title>submit search</title><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M0 0h24v24H0z" fill="none"/></svg></span></button></span>
+</div>
+</form>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package middleware
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/b-esc/carolyns-web/server/middleware"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html?m=all#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html?m=all#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+				<dd><a href="index.html?m=all#pkg-variables">Variables</a></dd>
+			
+			
+				
+				<dd><a href="index.html?m=all#PreviewGeneByUid">func PreviewGeneByUid(w http.ResponseWriter, r *http.Request)</a></dd>
+			
+				
+				<dd><a href="index.html?m=all#QueryGeneByUid">func QueryGeneByUid(w http.ResponseWriter, r *http.Request)</a></dd>
+			
+				
+				<dd><a href="index.html?m=all#buildPreviewResponse">func buildPreviewResponse(uid string) []Gene</a></dd>
+			
+				
+				<dd><a href="index.html?m=all#buildQueryResponse">func buildQueryResponse(uid string, n int, isNhood bool) ([]Gene, []Link)</a></dd>
+			
+				
+				<dd><a href="index.html?m=all#getGeneByUid">func getGeneByUid(uid string, b *Bitcask) Gene</a></dd>
+			
+				
+				<dd><a href="index.html?m=all#getNhoodLinks">func getNhoodLinks(uidSet mapset.Set, linkStrSet mapset.Set, genes []Gene) []Link</a></dd>
+			
+				
+				<dd><a href="index.html?m=all#init">func init()</a></dd>
+			
+				
+				<dd><a href="index.html?m=all#linkSliceToSet">func linkSliceToSet(links []Link) mapset.Set</a></dd>
+			
+				
+				<dd><a href="index.html?m=all#mapToArr">func mapToArr(m map[string]Link) []Link</a></dd>
+			
+				
+				<dd><a href="index.html?m=all#nMostRelatedGenesLinks">func nMostRelatedGenesLinks(outgoing map[string]Link, n int, b *Bitcask) ([]string, []Gene, []Link)</a></dd>
+			
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h3>Package files</h3>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/middleware/middleware.go">middleware.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+			<h2 id="pkg-variables">Variables</h2>
+			
+				<p>
+bitcask instance
+</p>
+
+				<pre>var <span id="store">store</span> *<a href="index.html?m=all#Bitcask">Bitcask</a></pre>
+			
+				
+				<pre>var <span id="storeErr">storeErr</span> <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
+			
+		
+		
+			
+			
+			<h2 id="PreviewGeneByUid">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/middleware/middleware.go?s=2627:2688#L72">PreviewGeneByUid</a>
+				<a class="permalink" href="index.html?m=all#PreviewGeneByUid">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func PreviewGeneByUid(w <a href="http://localhost:6060/pkg/net/http/">http</a>.<a href="http://localhost:6060/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:6060/pkg/net/http/">http</a>.<a href="http://localhost:6060/pkg/net/http/#Request">Request</a>)</pre>
+			<p>
+PreviewGeneByUid replicates QueryGeneByUid&#39;s behavior but only prepares
+the response data with genes to be displayed in a smaller table (no graph)
+This is called whenever &#39;more info&#39; is selected by the user on the clientside
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="QueryGeneByUid">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/middleware/middleware.go?s=1383:1442#L40">QueryGeneByUid</a>
+				<a class="permalink" href="index.html?m=all#QueryGeneByUid">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func QueryGeneByUid(w <a href="http://localhost:6060/pkg/net/http/">http</a>.<a href="http://localhost:6060/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:6060/pkg/net/http/">http</a>.<a href="http://localhost:6060/pkg/net/http/#Request">Request</a>)</pre>
+			<p>
+QueryGeneByUid is primarily a debugging tool for table + visualizer
+using the UIDs in the original gene_info csv
+takes a user&#39;s UID query, finds N most related genes in dataset (maxRes),
+filters out all edges not explicitly outgoing from root UID if isNhood = false
+returns an object containing properties:
+genes: array of Gene objects containing relevant edges
+links: array of edges to render (isNhood may impact this)
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="buildPreviewResponse">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/middleware/middleware.go?s=5473:5517#L175">buildPreviewResponse</a>
+				<a class="permalink" href="index.html?m=all#buildPreviewResponse">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func buildPreviewResponse(uid <a href="http://localhost:6060/pkg/builtin/#string">string</a>) []<a href="index.html?m=all#Gene">Gene</a></pre>
+			<p>
+Changes logic to be more minimal for preview queries
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="buildQueryResponse">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/middleware/middleware.go?s=5722:5795#L183">buildQueryResponse</a>
+				<a class="permalink" href="index.html?m=all#buildQueryResponse">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func buildQueryResponse(uid <a href="http://localhost:6060/pkg/builtin/#string">string</a>, n <a href="http://localhost:6060/pkg/builtin/#int">int</a>, isNhood <a href="http://localhost:6060/pkg/builtin/#bool">bool</a>) ([]<a href="index.html?m=all#Gene">Gene</a>, []<a href="index.html?m=all#Link">Link</a>)</pre>
+			<p>
+provides all needed for graph and main table
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="getGeneByUid">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/middleware/middleware.go?s=3254:3300#L95">getGeneByUid</a>
+				<a class="permalink" href="index.html?m=all#getGeneByUid">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func getGeneByUid(uid <a href="http://localhost:6060/pkg/builtin/#string">string</a>, b *<a href="index.html?m=all#Bitcask">Bitcask</a>) <a href="index.html?m=all#Gene">Gene</a></pre>
+			<p>
+helper function handling easy retreival of genes from our database
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="getNhoodLinks">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/middleware/middleware.go?s=4553:4634#L143">getNhoodLinks</a>
+				<a class="permalink" href="index.html?m=all#getNhoodLinks">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func getNhoodLinks(uidSet mapset.<a href="index.html?m=all#Set">Set</a>, linkStrSet mapset.<a href="index.html?m=all#Set">Set</a>, genes []<a href="index.html?m=all#Gene">Gene</a>) []<a href="index.html?m=all#Link">Link</a></pre>
+			<p>
+Aggregates links that are relevant to resultant Genes. Filters duplicates
+and includes links not directly connected to root Gene.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="init">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/middleware/middleware.go?s=605:616#L20">init</a>
+				<a class="permalink" href="index.html?m=all#init">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func init()</pre>
+			<p>
+connect to bitcask, key value local storage
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="linkSliceToSet">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/middleware/middleware.go?s=5253:5297#L166">linkSliceToSet</a>
+				<a class="permalink" href="index.html?m=all#linkSliceToSet">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func linkSliceToSet(links []<a href="index.html?m=all#Link">Link</a>) mapset.<a href="index.html?m=all#Set">Set</a></pre>
+			<p>
+Array to HashSet (for duplicate fitering)
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="mapToArr">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/middleware/middleware.go?s=3594:3633#L109">mapToArr</a>
+				<a class="permalink" href="index.html?m=all#mapToArr">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func mapToArr(m map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]<a href="index.html?m=all#Link">Link</a>) []<a href="index.html?m=all#Link">Link</a></pre>
+			<p>
+helper function converting a map of Links to an array of Links
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="nMostRelatedGenesLinks">func <a href="http://localhost:6060/src/github.com/b-esc/carolyns-web/server/middleware/middleware.go?s=3896:3995#L120">nMostRelatedGenesLinks</a>
+				<a class="permalink" href="index.html?m=all#nMostRelatedGenesLinks">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func nMostRelatedGenesLinks(outgoing map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]<a href="index.html?m=all#Link">Link</a>, n <a href="http://localhost:6060/pkg/builtin/#int">int</a>, b *<a href="index.html?m=all#Bitcask">Bitcask</a>) ([]<a href="http://localhost:6060/pkg/builtin/#string">string</a>, []<a href="index.html?m=all#Gene">Gene</a>, []<a href="index.html?m=all#Link">Link</a>)</pre>
+			<p>
+finds the n most related genes (via distance) and aggregates Edges to render
+on the visualizer. See getNhoodLinks below.
+returns list of genes, list of outgoing edges
+</p>
+
+			
+			
+
+		
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.14.<br>
+Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="http://localhost:6060/LICENSE">BSD license</a>.<br>
+<a href="http://localhost:6060/doc/tos.html">Terms of Service</a> |
+<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>
