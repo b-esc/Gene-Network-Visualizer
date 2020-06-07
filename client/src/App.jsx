@@ -1,6 +1,14 @@
 import * as React from 'react';
 import { withStore } from 'react-context-hook';
-import { Segment } from 'semantic-ui-react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams
+} from "react-router-dom";
+import { Segment, Container, Menu } from 'semantic-ui-react';
 import Home from './Home.jsx';
 import Splash from './Splash.jsx';
 
@@ -19,7 +27,47 @@ function App(){
         <div className="App">
             <Segment id='app-segment' vertical>
                 <div style={{ color: '#sebfcf7' }}>
-                    <Splash/>
+                  <Router>
+                  <Container>
+                    <Menu size='huge'>
+                      
+                      <Link style={{ textDecoration: 'none' }} to="/">
+                      <Menu.Item as='a'>
+                          app
+                      </Menu.Item>
+                      </Link>
+
+                      <Link style={{ textDecoration: 'none' }} to="/landing">
+                      <Menu.Item as='a'>
+                        home
+                      </Menu.Item>
+                      </Link>
+
+                      <Menu.Item as='a' href="https://dill-picl.org/">
+                        lab site
+                      </Menu.Item>
+                      <Menu.Item as='a' href="/docs/global.html" target='_blank'>
+                          documentation.js
+                      </Menu.Item>
+                      <Menu.Item as='a' href="/godocs/pkg/github.com/b-esc/carolyns-web/index.html" target='_blank'>
+                          documentation.go
+                      </Menu.Item>
+                      <Menu.Item as='a' href="/docs/global.html" target='_blank'>
+                          readme
+                      </Menu.Item>
+                    </Menu>
+                  </Container>
+
+                  <Switch>
+                    <Route path="/landing">
+                      <Splash/>
+                    </Route>
+                    <Route path="/">
+                      <Home/>
+                    </Route>
+                  </Switch>
+                  </Router>
+
                 </div>
             </Segment>
         </div>

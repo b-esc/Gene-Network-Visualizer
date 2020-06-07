@@ -22,22 +22,6 @@ function Splash(){
         style={{minHeight:650, padding: '0.75em 0em'}}
         vertical
       >
-        <Container>
-          <Menu size='huge'>
-            <Menu.Item as='a' href="https://dill-picl.org/">
-              lab site
-            </Menu.Item>
-            <Menu.Item as='a' href="/docs/global.html" target='_blank'>
-                documentation.js
-            </Menu.Item>
-            <Menu.Item as='a' href="/godocs/pkg/github.com/b-esc/carolyns-web/index.html" target='_blank'>
-                documentation.go
-            </Menu.Item>
-            <Menu.Item as='a' href="/docs/global.html" target='_blank'>
-                readme
-            </Menu.Item>
-          </Menu>
-        </Container>
 
         <Icon.Group size='huge' style={{marginTop: '1em'}}>
           <Icon loading size='huge' name='spinner'/>
@@ -58,9 +42,6 @@ function Splash(){
             />
         </Container>
 
-        <Button size='massive' color='green' inverted>
-          Enter
-        </Button>
 
       </Segment>
 

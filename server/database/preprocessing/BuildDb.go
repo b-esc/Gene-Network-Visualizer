@@ -3,7 +3,7 @@
 // Usage: go run ./BuildDb.go info.csv edges.csv [-d]
 // [-d as third arg clears current db]
 
-package preprocessing
+package main
 
 import (
 	"encoding/json"
