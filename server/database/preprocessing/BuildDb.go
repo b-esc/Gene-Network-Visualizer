@@ -10,7 +10,7 @@ import (
 	"fmt"
 	. "github.com/b-esc/carolyns-web/server/models"
 	"github.com/k0kubun/pp"
-	"github.com/prologic/bitcask"
+	"git.mills.io/prologic/bitcask"
 	"io"
 	"log"
 	"os"
