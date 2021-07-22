@@ -8,7 +8,7 @@ require (
 	github.com/ibbd-dev/go-csv v0.0.0-20180710072442-95221cf028d5 // indirect
 	github.com/k0kubun/pp v3.0.1+incompatible
 	github.com/mattn/go-colorable v0.1.6 // indirect
-	github.com/prologic/bitcask v0.3.5
+	git.mills.io/prologic/bitcask v0.3.5
 	go.mongodb.org/mongo-driver v1.3.1 // indirect
 	golang.org/x/tools v0.0.0-20200606014950-c42cb6316fb6 // indirect
 )
